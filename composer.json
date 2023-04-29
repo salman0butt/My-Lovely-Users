@@ -1,0 +1,27 @@
+{
+    "name": "inpsyde/my-lovely-users",
+    "type": "wordpress-plugin",
+    "description": "My lovely users table plugin",
+    "autoload": {
+        "psr-4": {
+            "Inpsyde\\MyLovelyUsers\\": "src/",
+            "Inpsyde\\MyLovelyUsers\\Assets\\": "src/assets/",
+            "Inpsyde\\MyLovelyUsers\\Interfaces\\": "src/interfaces/"
+        }
+    },
+    "authors": [
+        {
+            "name": "salman0butt",
+            "email": "salman0butt@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "inpsyde/php-coding-standards": "^1.0",
+        "squizlabs/php_codesniffer": "3.6.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

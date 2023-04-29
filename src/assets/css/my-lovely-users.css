@@ -1,0 +1,48 @@
+#users-table, #users-details {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+#users-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+#users-details thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+#users-table .user-details-link{
+    text-decoration: none;
+}
+
+#users-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+#users-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+#users-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+#users-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+.text-center {
+    text-align: center;
+    margin: 20px;
+}
