@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Inpsyde\MyLovelyUsers\Asset;
+use Inpsyde\MyLovelyUsers\Loader;
+use Inpsyde\MyLovelyUsers\Lib\MyCache;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
 /**
  * The plugin bootstrap file
@@ -33,14 +36,18 @@ if (! defined('WPINC')) {
     die;
 }
 
-define('MY_LOVELY_USERS_TABLE_PLUGIN_VERSION', '1.0.0');
+define('MY_LOVELY_USERS_VERSION', '1.0.0');
+define('MY_LOVELY_USERS_NAME', 'my-lovely-users');
 
 require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
 function run_my_lovely_users_table_plugin()
 {
-
-    $plugin = new MyLovelyUsers();
+    $cache = new MyCache();
+    $loader = new Loader();
+    $asset = new Asset(MY_LOVELY_USERS_VERSION, MY_LOVELY_USERS_NAME);
+    
+    $plugin = new MyLovelyUsers($cache, $loader, $asset);
     $plugin->run();
 }
 

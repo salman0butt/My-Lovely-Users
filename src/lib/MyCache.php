@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Inpsyde\MyLovelyUsers;
+namespace Inpsyde\MyLovelyUsers\Lib;
 
-use Inpsyde\MyLovelyUsers\Interfaces\CacheSystemInterface;
+use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 
-class MyCache implements CacheSystemInterface
+class MyCache implements CacheInterface
 {
     public function get(string $key): mixed
     {

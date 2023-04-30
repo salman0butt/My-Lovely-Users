@@ -17,45 +17,46 @@ declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers;
 
-use Inpsyde\MyLovelyUsers\MyLovelyUsersLoader;
-use Inpsyde\MyLovelyUsers\MyCache;
-use Inpsyde\MyLovelyUsers\MyLovelyUsersCore;
+use Inpsyde\MyLovelyUsers\Core;
+use Inpsyde\MyLovelyUsers\Interfaces\AssetInterface;
+use Inpsyde\MyLovelyUsers\Interfaces\LoaderInterface;
+use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 
-class MyLovelyUsers extends MyLovelyUsersCore
+class MyLovelyUsers extends Core
 {
-    protected MyLovelyUsersLoader $loader;
+    protected LoaderInterface $loader;
 
-    protected string $pluginName;
+    protected AssetInterface $asset;
 
-    protected string $version;
+    protected string $pluginName = 'my-lovely-users';
 
-    public function __construct()
+    protected string $version = '1.0.0';
+
+    public function __construct(CacheInterface $cache, LoaderInterface $loader, AssetInterface $asset)
     {
-        // Get an instance of the global cache object
-        $cache = new MyCache();
         parent::__construct($cache);
 
-        $this->version = '1.0.0';
+        $this->loader = $loader;
+        $this->asset = $asset;
 
-        if (defined('MY_LOVELY_USERS_TABLE_PLUGIN_VERSION')) {
-            $this->version = MY_LOVELY_USERS_TABLE_PLUGIN_VERSION;
+        if (defined('MY_LOVELY_USERS_VERSION')) {
+            $this->version = MY_LOVELY_USERS_VERSION;
         }
 
-        $this->pluginName = 'my-lovely-users';
+        if (defined('MY_LOVELY_USERS_NAME')) {
+            $this->pluginName = MY_LOVELY_USERS_NAME;
+        }
 
-        $this->loadDependencies();
         $this->definePublicHooks();
-    }
-
-    private function loadDependencies(): void
-    {
-        $this->loader = new MyLovelyUsersLoader();
     }
 
     private function definePublicHooks(): void
     {
-        $this->loader->addAction('wp_enqueue_scripts', [$this, 'enqueueStyles']);
-        $this->loader->addAction('wp_enqueue_scripts', [$this, 'enqueueScripts']);
+        // Register the script
+        $this->loader->addAction('wp_enqueue_scripts', [$this->asset, 'enqueueStyles']);
+        $this->loader->addAction('wp_enqueue_scripts', [$this->asset, 'enqueueScripts']);
+
+        // Register and define other hooks
         $this->loader->addAction('init', [$this, 'registerCustomEndpoint']);
         $this->loader->addAction('template_redirect', [$this, 'displayUsersTable']);
         $this->loader->addAction('wp_ajax_fetch_user_details', [$this, 'fetchUserDetailsCallback']);
@@ -63,32 +64,6 @@ class MyLovelyUsers extends MyLovelyUsersCore
             'wp_ajax_nopriv_fetch_user_details',
             [$this, 'fetchUserDetailsCallback']
         );
-    }
-
-    public function enqueueStyles(): void
-    {
-        wp_enqueue_style(
-            $this->pluginName,
-            plugin_dir_url(__FILE__) . 'assets/css/my-lovely-users.css',
-            [],
-            $this->version,
-            'all'
-        );
-    }
-
-    public function enqueueScripts(): void
-    {
-        wp_enqueue_script(
-            $this->pluginName,
-            plugin_dir_url(__FILE__) . 'assets/js/my-lovely-users.js',
-            [ 'jquery' ],
-            $this->version,
-            true
-        );
-        wp_localize_script($this->pluginName, 'myPlugin', [
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('my_lovely_user_nonce'),
-        ]);
     }
 
     public function run(): void
@@ -101,7 +76,7 @@ class MyLovelyUsers extends MyLovelyUsersCore
         return $this->pluginName;
     }
 
-    public function loader(): MyLovelyUsersLoader
+    public function loader(): LoaderInterface
     {
         return $this->loader;
     }

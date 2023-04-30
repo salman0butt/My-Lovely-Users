@@ -6,7 +6,8 @@
         "psr-4": {
             "Inpsyde\\MyLovelyUsers\\": "src/",
             "Inpsyde\\MyLovelyUsers\\Assets\\": "src/assets/",
-            "Inpsyde\\MyLovelyUsers\\Interfaces\\": "src/interfaces/"
+            "Inpsyde\\MyLovelyUsers\\Interfaces\\": "src/interfaces/",
+            "Inpsyde\\MyLovelyUsers\\Lib\\": "src/lib/"
         }
     },
     "authors": [
@@ -17,7 +18,8 @@
     ],
     "require-dev": {
         "inpsyde/php-coding-standards": "^1.0",
-        "squizlabs/php_codesniffer": "3.6.2"
+        "squizlabs/php_codesniffer": "3.6.2",
+        "phpunit/phpunit": "^10.1"
     },
     "config": {
         "allow-plugins": {

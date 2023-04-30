@@ -14,7 +14,9 @@
 
  namespace Inpsyde\MyLovelyUsers;
 
-class MyLovelyUsersLoader
+ use Inpsyde\MyLovelyUsers\Interfaces\LoaderInterface;
+
+class Loader implements LoaderInterface
 {
     protected $actions;
 

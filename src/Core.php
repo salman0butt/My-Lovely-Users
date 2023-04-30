@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers;
 
-use Inpsyde\MyLovelyUsers\MyCache;
+use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 
-class MyLovelyUsersCore
+class Core
 {
-    private MyCache $cache;
-    private $cacheExpireTime = 60 * 60;
+    private CacheInterface $cache;
+    private int $cacheExpireTime = 60 * 60;
     private string $apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
-    public function __construct(MyCache $cache)
+    public function __construct(CacheInterface $cache)
     {
-
         $this->cache = $cache;
     }
 
@@ -26,22 +25,23 @@ class MyLovelyUsersCore
 
     public function displayUsersTable(): void
     {
-        if (get_query_var('my_lovely_users_table')) {
-            $users = $this->fetchUsersData();
 
-            ob_start();
-            include  plugin_dir_path(__FILE__) . 'assets/partials/users-table.php';
-            // phpcs:disable
-            echo ob_get_clean();
-            exit;
+        if (!get_query_var('my_lovely_users_table')) {
+            return;
         }
+
+        $users = $this->fetchUsersData();
+        include plugin_dir_path(__FILE__) . 'partials/users-table.php';
+
+        exit;
     }
 
+    // fetchUsersData call http request to get users data
     private function fetchUsersData(): array
     {
 
         // Check if data is in cache
-        $cachedUsersData = $this->cache->get('my_lovely_users_data');
+        $cachedUsersData = $this->cache ? $this->cache->get('my_lovely_users_data') : null;
 
         if ($cachedUsersData) {
             // Data was found in cache, return it
@@ -79,12 +79,13 @@ class MyLovelyUsersCore
 
         // Cache data for 1 hour
         if ($users && count($users) > 0) {
-            $this->cache->set( 'my_lovely_users_data', $users, $this->cacheExpireTime );
+            $this->cache->set('my_lovely_users_data', $users, $this->cacheExpireTime);
         }
 
         return $users;
     }
 
+    // fetchUserDetailsCallback is called by ajax 
     public function fetchUserDetailsCallback(): void
     {
         $userId = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
@@ -92,8 +93,9 @@ class MyLovelyUsersCore
         if (! $userId) {
             wp_send_json_error('Invalid user ID.');
         }
-        $myPluginNonce = $_POST['my_plugin_nonce'] ?? '';
-        $myPluginNonce = sanitize_text_field(wp_unslash($myPluginNonce));
+        $myPluginNonce = isset($_POST['my_plugin_nonce'])
+        ? sanitize_text_field(wp_unslash($_POST['my_plugin_nonce']))
+        : '';
 
           // Verify nonce
         if (
@@ -104,7 +106,9 @@ class MyLovelyUsersCore
         }
 
         // Check if data is in cache
-        $cachedUserData = $this->cache->get('my_lovely_users_data_detail_' . $userId);
+        $cachedUserData = $this->cache
+        ? $this->cache->get('my_lovely_users_data_detail_' . $userId)
+        : null;
 
         if ($cachedUserData) {
             // Data was found in cache, return it
@@ -122,15 +126,17 @@ class MyLovelyUsersCore
             wp_send_json_error('Failed to fetch user details.');
         }
 
-        $userDetails = json_decode($body, true);
+        $userDetails = wp_json_decode($body, true);
 
         ob_start();
-        include  plugin_dir_path(__FILE__) . 'assets/partials/users-detail.php';
+        include  plugin_dir_path(__FILE__) . 'partials/users-detail.php';
         $output = ob_get_clean();
 
         // Cache data for 1 hour
         if ($userDetails) {
-            $this->cache->set('my_lovely_users_data_detail_' . $userId, $output, $this->cacheExpireTime);
+            $this
+            ->cache
+            ->set('my_lovely_users_data_detail_' . $userId, $output, $this->cacheExpireTime);
         }
 
         wp_send_json_success(['html' => $output]);
