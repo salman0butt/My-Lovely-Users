@@ -46,3 +46,7 @@
     text-align: center;
     margin: 20px;
 }
+
+.table-container, #user-details-container {
+    overflow-x:auto;
+}

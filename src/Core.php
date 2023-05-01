@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers;
 
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
+use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
 
 class Core
 {
     private CacheInterface $cache;
+    private HttpClientInterface $httpClient;
     private int $cacheExpireTime = 60 * 60;
     private string $apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
-    public function __construct(CacheInterface $cache)
+    public function __construct(CacheInterface $cache, HttpClientInterface $httpClient)
     {
         $this->cache = $cache;
+        $this->httpClient = $httpClient;
     }
 
     public function registerCustomEndpoint(): void
@@ -23,7 +26,7 @@ class Core
         add_rewrite_tag('%my_lovely_users_table%', '1');
     }
 
-    public function displayUsersTable(): void
+    public function renderUsersTable(): void
     {
 
         if (!get_query_var('my_lovely_users_table')) {
@@ -37,62 +40,41 @@ class Core
     }
 
     // fetchUsersData call http request to get users data
-    private function fetchUsersData(): array
+    public function fetchUsersData(): array
     {
 
         // Check if data is in cache
         $cachedUsersData = $this->cache ? $this->cache->get('my_lovely_users_data') : null;
 
         if ($cachedUsersData) {
-            // Data was found in cache, return it
             return $cachedUsersData;
         }
 
-        $response = wp_remote_get($this->apiUrl);
+        $users = [];
 
-        if (is_wp_error($response)) {
-            // Handle WP_Error
-            $errorMessage = $response->get_error_message();
-            wp_send_json_error("Error fetching users data: $errorMessage");
-        }
-
-        $statusCode = wp_remote_retrieve_response_code($response);
-
-        if ($statusCode !== 200) {
-            // Handle non-200 HTTP response codes
-            wp_send_json_error("Error fetching users data");
-        }
-
-        $body = wp_remote_retrieve_body($response);
-
-        if (!$body) {
-            // Handle empty response body
-            wp_send_json_error("Error fetching users data: Response body is empty");
-        }
-
-        $users = json_decode($body, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            // Handle JSON decoding errors
-            wp_send_json_error("Error decoding users data JSON: " . json_last_error_msg());
+        try {
+            $users = $this->httpClient->get($this->apiUrl);
+        } catch (\Exception $exp) {
+            wp_send_json_error("Error fetching users data: " . $exp->getMessage());
         }
 
         // Cache data for 1 hour
-        if ($users && count($users) > 0) {
+        if ($this->cache) {
             $this->cache->set('my_lovely_users_data', $users, $this->cacheExpireTime);
         }
 
         return $users;
     }
 
-    // fetchUserDetailsCallback is called by ajax 
-    public function fetchUserDetailsCallback(): void
+    // fetchUserDetailsCallback is called by ajax
+    public function fetchUserDetailsCallback(): array
     {
         $userId = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
 
         if (! $userId) {
-            wp_send_json_error('Invalid user ID.');
+            wp_send_json_error("Invalid user ID.");
         }
+
         $myPluginNonce = isset($_POST['my_plugin_nonce'])
         ? sanitize_text_field(wp_unslash($_POST['my_plugin_nonce']))
         : '';
@@ -102,7 +84,7 @@ class Core
             !isset($myPluginNonce)
             || !wp_verify_nonce($myPluginNonce, 'my_lovely_user_nonce')
         ) {
-            wp_send_json_error('Security check failed.');
+            wp_send_json_error("Security check failed.");
         }
 
         // Check if data is in cache
@@ -111,26 +93,16 @@ class Core
         : null;
 
         if ($cachedUserData) {
-            // Data was found in cache, return it
             wp_send_json_success(['html' => $cachedUserData]);
         }
-
-        $url = $this->apiUrl . "/{$userId}";
-        $response = wp_remote_get($url);
-        if (is_wp_error($response)) {
-            wp_send_json_error('Failed to fetch user details.');
+        $userDetails = null;
+        try {
+            $userDetails = $this->httpClient->get($this->apiUrl . "/{$userId}");
+        } catch (\Exception $exp) {
+            wp_send_json_error("Error fetching users data: " . $exp->getMessage());
         }
 
-        $body = wp_remote_retrieve_body($response);
-        if (! $body) {
-            wp_send_json_error('Failed to fetch user details.');
-        }
-
-        $userDetails = wp_json_decode($body, true);
-
-        ob_start();
-        include  plugin_dir_path(__FILE__) . 'partials/users-detail.php';
-        $output = ob_get_clean();
+        $output = $this->rednerUserDetails($userDetails);
 
         // Cache data for 1 hour
         if ($userDetails) {
@@ -139,6 +111,15 @@ class Core
             ->set('my_lovely_users_data_detail_' . $userId, $output, $this->cacheExpireTime);
         }
 
-        wp_send_json_success(['html' => $output]);
+        return wp_send_json_success([
+            'html' => $output,
+        ]);
+    }
+
+    public function rednerUserDetails(array $userDetails): string
+    {
+        ob_start();
+        require  plugin_dir_path(__FILE__) . 'partials/users-detail.php';
+        return ob_get_clean();
     }
 }

@@ -18,9 +18,9 @@
 
 class Loader implements LoaderInterface
 {
-    protected $actions;
+    private $actions;
 
-    protected $filters;
+    private $filters;
 
     public function __construct()
     {

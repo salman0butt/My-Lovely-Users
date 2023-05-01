@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/PHPUnit/bootstrap.php" backupGlobals="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+    <exclude>
+      <directory>tests</directory>
+      <directory>vendor</directory>
+    </exclude>
+    <report>
+      <html outputDirectory="tmp"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="MyLovelyUsers php unit tests">
+      <directory suffix="Test.php">./tests/PHPUnit/Unit</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+  <const name="WP_CORE_DIR" value="./vendor/wordpress/wordpress-tests-lib/includes/"/>
+  <const name="WP_TESTS_DIR" value="./vendor/wordpress/wordpress-tests-lib/"/>
+  <server name="WP_TESTS_DOMAIN" value="localhost"/>
+  <server name="WP_TESTS_EMAIL" value="admin@example.com"/>
+  <server name="WP_TESTS_TITLE" value="Test Site"/>
+  <server name="WP_PHP_BINARY" value="/usr/local/bin/php"/>
+</php>
+  <logging/>
+</phpunit>

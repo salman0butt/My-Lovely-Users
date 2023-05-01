@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Inpsyde\MyLovelyUsers\Core;
 use Inpsyde\MyLovelyUsers\Asset;
 use Inpsyde\MyLovelyUsers\Loader;
+use Inpsyde\MyLovelyUsers\HttpClient;
 use Inpsyde\MyLovelyUsers\Lib\MyCache;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
 /**
@@ -45,9 +47,12 @@ function run_my_lovely_users_table_plugin()
 {
     $cache = new MyCache();
     $loader = new Loader();
-    $asset = new Asset(MY_LOVELY_USERS_VERSION, MY_LOVELY_USERS_NAME);
+    $asset = new Asset();
+    $httpClient = new HttpClient();
+
+    $core = new Core($cache, $httpClient);
     
-    $plugin = new MyLovelyUsers($cache, $loader, $asset);
+    $plugin = new MyLovelyUsers($loader, $asset, $core);
     $plugin->run();
 }
 

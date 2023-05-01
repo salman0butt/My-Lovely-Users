@@ -20,24 +20,24 @@ namespace Inpsyde\MyLovelyUsers;
 use Inpsyde\MyLovelyUsers\Core;
 use Inpsyde\MyLovelyUsers\Interfaces\AssetInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\LoaderInterface;
-use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 
-class MyLovelyUsers extends Core
+class MyLovelyUsers
 {
-    protected LoaderInterface $loader;
+    private LoaderInterface $loader;
 
-    protected AssetInterface $asset;
+    private AssetInterface $asset;
 
-    protected string $pluginName = 'my-lovely-users';
+    private Core $core;
 
-    protected string $version = '1.0.0';
+    private string $pluginName = 'my-lovely-users';
 
-    public function __construct(CacheInterface $cache, LoaderInterface $loader, AssetInterface $asset)
+    private string $version = '1.0.0';
+
+    public function __construct(LoaderInterface $loader, AssetInterface $asset, Core $core)
     {
-        parent::__construct($cache);
-
         $this->loader = $loader;
         $this->asset = $asset;
+        $this->core = $core;
 
         if (defined('MY_LOVELY_USERS_VERSION')) {
             $this->version = MY_LOVELY_USERS_VERSION;
@@ -47,22 +47,22 @@ class MyLovelyUsers extends Core
             $this->pluginName = MY_LOVELY_USERS_NAME;
         }
 
-        $this->definePublicHooks();
+        $this->defineHooks();
     }
 
-    private function definePublicHooks(): void
+    private function defineHooks(): void
     {
         // Register the script
         $this->loader->addAction('wp_enqueue_scripts', [$this->asset, 'enqueueStyles']);
         $this->loader->addAction('wp_enqueue_scripts', [$this->asset, 'enqueueScripts']);
 
         // Register and define other hooks
-        $this->loader->addAction('init', [$this, 'registerCustomEndpoint']);
-        $this->loader->addAction('template_redirect', [$this, 'displayUsersTable']);
-        $this->loader->addAction('wp_ajax_fetch_user_details', [$this, 'fetchUserDetailsCallback']);
+        $this->loader->addAction('init', [$this->core, 'registerCustomEndpoint']);
+        $this->loader->addAction('template_redirect', [$this->core, 'renderUsersTable']);
+        $this->loader->addAction('wp_ajax_fetch_user_details', [$this->core, 'fetchUserDetailsCallback']);
         $this->loader->addAction(
             'wp_ajax_nopriv_fetch_user_details',
-            [$this, 'fetchUserDetailsCallback']
+            [$this->core, 'fetchUserDetailsCallback']
         );
     }
 

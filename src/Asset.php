@@ -11,11 +11,16 @@ class Asset implements AssetInterface
     private string $pluginName;
     private string $version;
 
-    public function __construct(string $pluginName, string $version)
+    public function __construct()
     {
 
-        $this->pluginName = $pluginName;
-        $this->version = $version;
+        if (defined('MY_LOVELY_USERS_VERSION')) {
+            $this->version = MY_LOVELY_USERS_VERSION;
+        }
+
+        if (defined('MY_LOVELY_USERS_NAME')) {
+            $this->pluginName = MY_LOVELY_USERS_NAME;
+        }
     }
 
     public function enqueueStyles(): void

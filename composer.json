@@ -7,8 +7,12 @@
             "Inpsyde\\MyLovelyUsers\\": "src/",
             "Inpsyde\\MyLovelyUsers\\Assets\\": "src/assets/",
             "Inpsyde\\MyLovelyUsers\\Interfaces\\": "src/interfaces/",
-            "Inpsyde\\MyLovelyUsers\\Lib\\": "src/lib/"
+            "Inpsyde\\MyLovelyUsers\\Lib\\": "src/lib/",
+            "Inpsyde\\MyLovelyUsers\\Test\\": "tests/PHPUnit/Unit"
         }
+    },
+    "require": {
+        "php": ">=8.1"
     },
     "authors": [
         {
@@ -19,11 +23,13 @@
     "require-dev": {
         "inpsyde/php-coding-standards": "^1.0",
         "squizlabs/php_codesniffer": "3.6.2",
-        "phpunit/phpunit": "^10.1"
+        "phpunit/phpunit": "^9.5",
+        "brain/monkey": "2.*"
     },
     "config": {
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "johnpbloch/wordpress-core-installer": false
         }
     }
 }
