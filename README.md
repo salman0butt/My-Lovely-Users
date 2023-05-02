@@ -4,7 +4,6 @@ This Plugin Fetch Users Data and Display
 
 1. PHP version 8.1 or higher
 1. Composer dependency manager to install required depdencies like Inpsyde code style, PHPCS, PHPUNIT, Brain Monkey.. etc
-1. https://jsonplaceholder.typicode.com/ Third Party API to fetch Data
 
 
 ## Installation
