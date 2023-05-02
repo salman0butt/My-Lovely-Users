@@ -79,6 +79,9 @@ class MyLovelyUsers
             'wp_ajax_nopriv_fetch_user_details',
             [$this->core, 'fetchUserDetailsCallback']
         );
+
+        add_action('admin_menu', [$this->core, 'myLovelyUsersSettingsPage']);
+        add_action('admin_init', [$this->core, 'myLovelyUsersSaveSettings']);
     }
 
     public function pluginName(): string

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Inpsyde\MyLovelyUsers\Core;
-use Inpsyde\MyLovelyUsers\Asset;
 use Inpsyde\MyLovelyUsers\HttpClient;
 use Inpsyde\MyLovelyUsers\Lib\MyCache;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
@@ -44,6 +43,22 @@ define('PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
 
 require_once PLUGIN_DIR_PATH . 'vendor/autoload.php';
 
+function my_plugin_activation() {
+    if( !get_option('my_lovely_users_endpoint') ) {
+        add_option('my_lovely_users_endpoint', 'my-lovely-users-table');
+    }
+    // flush rewrite rules on activation
+    flush_rewrite_rules();
+}
+register_activation_hook( __FILE__, 'my_plugin_activation' );
+
+function my_plugin_deactivation() {
+    // flush rewrite rules on deactivation
+    flush_rewrite_rules();
+}
+register_deactivation_hook( __FILE__, 'my_plugin_deactivation' );
+
+
 function run_my_lovely_users_table_plugin()
 {
     $cache = new MyCache();
@@ -51,7 +66,6 @@ function run_my_lovely_users_table_plugin()
     $core = new Core($cache, $httpClient);
     
     class_exists(MyLovelyUsers::class) && MyLovelyUsers::instance($core);
-
 }
 
 run_my_lovely_users_table_plugin();

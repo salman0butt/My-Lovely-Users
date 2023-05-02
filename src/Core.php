@@ -22,8 +22,16 @@ class Core
 
     public function registerCustomEndpoint(): void
     {
-        add_rewrite_rule('my-lovely-users-table/?$', 'index.php?my_lovely_users_table=1', 'top');
+        $endpoint = get_option('my_lovely_users_endpoint');
+
+        if (!$endpoint) {
+            $endpoint = 'my-lovely-users-table';
+        }
+
+        add_rewrite_rule($endpoint, 'index.php?my_lovely_users_table=1', 'top');
         add_rewrite_tag('%my_lovely_users_table%', '1');
+        // clear the rewrite to make the endpoint working without issue
+        flush_rewrite_rules();
     }
 
     public function showUsersTable(): void
@@ -125,5 +133,50 @@ class Core
         ob_start();
         require_once  dirname(__DIR__) . '/src/partials/users-detail.php';
         return ob_get_clean();
+    }
+
+    public function myLovelyUsersSettingsPage()
+    {
+
+        add_options_page(
+            'My Lovely Users Settings',
+            'My Lovely Users',
+            'manage_options',
+            'my_lovely_users_settings',
+            [$this, 'myLovelyUsersSettingsPageCallback']
+        );
+    }
+
+    public function myLovelyUsersSettingsPageCallback()
+    {
+
+        ?>
+        <div class="wrap">
+            <h1>My Lovely Users Settings</h1>
+            <form method="post" action="options.php">
+                <?php settings_fields('my_lovely_users_settings'); ?>
+                <?php do_settings_sections('my_lovely_users_settings'); ?>
+                <table class="form-table">
+                    <tr valign="top">
+                        <th scope="row">Endpoint URL</th>
+                        <td>
+                            <input 
+                            type="text" 
+                            name="my_lovely_users_endpoint" 
+                            value="<?php echo esc_attr(get_option('my_lovely_users_endpoint')); ?>"
+                            >
+                        </td>
+                    </tr>
+                </table>
+                <?php submit_button(); ?>
+            </form>
+        </div>
+        <?php
+    }
+
+    public function myLovelyUsersSaveSettings()
+    {
+
+        register_setting('my_lovely_users_settings', 'my_lovely_users_endpoint');
     }
 }

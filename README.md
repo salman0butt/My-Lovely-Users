@@ -26,7 +26,12 @@ Once the plugin is installed and activated, a new endpoint will be available at 
 
 ## Configuration
 
-The plugin does not require any configuration, but the following constants can be defined to customize its behavior:
+The Plugin Have Extra Feature To Customize the End Point Just Goto the Settings and Click My Lovely Users Settings under Settings Tab in admin pannel.
+Here You Can Change the EndPoint Dynamically
+
+Default Endpoint: my-lovely-users-table
+
+the following constants can be defined to customize its behavior:
 
 MY_LOVELY_USERS_VERSION - the version number of the plugin (default is 1.0.0)
 MY_LOVELY_USERS_NAME - the name of the plugin (default is my-lovely-users)

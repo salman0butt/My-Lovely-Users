@@ -5,7 +5,6 @@
     "autoload": {
         "psr-4": {
             "Inpsyde\\MyLovelyUsers\\": "src/",
-            "Inpsyde\\MyLovelyUsers\\Assets\\": "src/assets/",
             "Inpsyde\\MyLovelyUsers\\Interfaces\\": "src/interfaces/",
             "Inpsyde\\MyLovelyUsers\\Lib\\": "src/lib/",
             "Inpsyde\\MyLovelyUsers\\Test\\": "tests/PHPUnit/Unit"

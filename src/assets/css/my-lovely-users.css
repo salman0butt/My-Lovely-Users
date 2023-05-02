@@ -50,3 +50,7 @@
 .table-container, #user-details-container {
     overflow-x:auto;
 }
+
+#user-details-container {
+    text-align: center;
+}
