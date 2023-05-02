@@ -16,7 +16,7 @@ use Inpsyde\MyLovelyUsers\MyLovelyUsers;
  *
  * @link              https://github.com/salman0butt
  * @since             1.0.0
- * @package           My_Lovely_Users
+ * @package           MyLovelyUsers
  *
  * @wordpress-plugin
  * Plugin Name:       My Lovely Users
@@ -28,7 +28,6 @@ use Inpsyde\MyLovelyUsers\MyLovelyUsers;
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       my-lovely-users
- * Domain Path:       /languages
  */
 
 // If this file is called directly, abort.
