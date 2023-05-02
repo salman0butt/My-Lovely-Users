@@ -31,6 +31,8 @@ The plugin does not require any configuration, but the following constants can b
 MY_LOVELY_USERS_VERSION - the version number of the plugin (default is 1.0.0)
 MY_LOVELY_USERS_NAME - the name of the plugin (default is my-lovely-users)
 
+## Cache
+The plugin implements its own CacheInterface rather than relying on WordPress. This choice was likely made to provide more flexibility and control over how caching is handled within the plugin. By defining its own interface, the plugin can more easily switch to a different caching implementation in the future if needed. WE Made Own MyCache Class and Used WordPress transient Functions as cache as for now in future we can use redis memcache etc.
 
 ## Running Tests
 
