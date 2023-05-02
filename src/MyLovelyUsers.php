@@ -18,67 +18,72 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers;
 
 use Inpsyde\MyLovelyUsers\Core;
-use Inpsyde\MyLovelyUsers\Interfaces\AssetInterface;
-use Inpsyde\MyLovelyUsers\Interfaces\LoaderInterface;
 
 class MyLovelyUsers
 {
-    private LoaderInterface $loader;
-
-    private AssetInterface $asset;
-
     private Core $core;
 
-    private string $pluginName = 'my-lovely-users';
+    private static $instance;
 
-    private string $version = '1.0.0';
+    private string $pluginName = MY_LOVELY_USERS_NAME;
 
-    public function __construct(LoaderInterface $loader, AssetInterface $asset, Core $core)
+    private string $version = MY_LOVELY_USERS_VERSION;
+
+    public function __construct(Core $core)
     {
-        $this->loader = $loader;
-        $this->asset = $asset;
+
         $this->core = $core;
-
-        if (defined('MY_LOVELY_USERS_VERSION')) {
-            $this->version = MY_LOVELY_USERS_VERSION;
-        }
-
-        if (defined('MY_LOVELY_USERS_NAME')) {
-            $this->pluginName = MY_LOVELY_USERS_NAME;
-        }
-
         $this->defineHooks();
+    }
+
+    public static function instance(Core $core): self
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self($core);
+        }
+
+        return self::$instance;
     }
 
     private function defineHooks(): void
     {
         // Register the script
-        $this->loader->addAction('wp_enqueue_scripts', [$this->asset, 'enqueueStyles']);
-        $this->loader->addAction('wp_enqueue_scripts', [$this->asset, 'enqueueScripts']);
+        add_action('wp_enqueue_scripts', function () {
+            wp_enqueue_style(
+                $this->pluginName,
+                plugin_dir_url(__FILE__) . 'assets/css/my-lovely-users.css',
+                [],
+                $this->version,
+                'all'
+            );
+        });
+        add_action('wp_enqueue_scripts', function () {
+            wp_enqueue_script(
+                $this->pluginName,
+                plugin_dir_url(__FILE__) . 'assets/js/my-lovely-users.js',
+                ['jquery'],
+                $this->version,
+                true
+            );
+            wp_localize_script($this->pluginName, 'myPlugin', [
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('my_lovely_user_nonce'),
+            ]);
+        });
 
         // Register and define other hooks
-        $this->loader->addAction('init', [$this->core, 'registerCustomEndpoint']);
-        $this->loader->addAction('template_redirect', [$this->core, 'showUsersTable']);
-        $this->loader->addAction('wp_ajax_fetch_user_details', [$this->core, 'fetchUserDetailsCallback']);
-        $this->loader->addAction(
+        add_action('init', [$this->core, 'registerCustomEndpoint']);
+        add_action('template_redirect', [$this->core, 'showUsersTable']);
+        add_action('wp_ajax_fetch_user_details', [$this->core, 'fetchUserDetailsCallback']);
+        add_action(
             'wp_ajax_nopriv_fetch_user_details',
             [$this->core, 'fetchUserDetailsCallback']
         );
     }
 
-    public function run(): void
-    {
-        $this->loader->run();
-    }
-
     public function pluginName(): string
     {
         return $this->pluginName;
-    }
-
-    public function loader(): LoaderInterface
-    {
-        return $this->loader;
     }
 
     public function version(): string

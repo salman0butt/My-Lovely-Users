@@ -4,7 +4,6 @@ declare (strict_types = 1);
 
 namespace Inpsyde\MyLovelyUsers\Test;
 
-use Brain\Monkey;
 use Inpsyde\MyLovelyUsers\Core;
 use PHPUnit\Framework\TestCase;
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;

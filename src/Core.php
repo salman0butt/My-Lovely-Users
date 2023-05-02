@@ -71,7 +71,7 @@ class Core
     }
 
     // fetchUserDetailsCallback is called by ajax
-    public function fetchUserDetailsCallback(): string
+    public function fetchUserDetailsCallback(): mixed
     {
         $userId = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
 

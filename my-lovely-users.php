@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Inpsyde\MyLovelyUsers\Core;
 use Inpsyde\MyLovelyUsers\Asset;
-use Inpsyde\MyLovelyUsers\Loader;
 use Inpsyde\MyLovelyUsers\HttpClient;
 use Inpsyde\MyLovelyUsers\Lib\MyCache;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
@@ -41,19 +40,18 @@ if (! defined('WPINC')) {
 define('MY_LOVELY_USERS_VERSION', '1.0.0');
 define('MY_LOVELY_USERS_NAME', 'my-lovely-users');
 
-require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
+define('PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
+
+require_once PLUGIN_DIR_PATH . 'vendor/autoload.php';
 
 function run_my_lovely_users_table_plugin()
 {
     $cache = new MyCache();
-    $loader = new Loader();
-    $asset = new Asset();
     $httpClient = new HttpClient();
-
     $core = new Core($cache, $httpClient);
     
-    $plugin = new MyLovelyUsers($loader, $asset, $core);
-    $plugin->run();
+    class_exists(MyLovelyUsers::class) && MyLovelyUsers::instance($core);
+
 }
 
 run_my_lovely_users_table_plugin();
