@@ -135,7 +135,7 @@ class Core
         return ob_get_clean();
     }
 
-    public function myLovelyUsersSettingsPage()
+    public function myLovelyUsersSettingsPage(): void
     {
 
         add_options_page(
@@ -147,7 +147,7 @@ class Core
         );
     }
 
-    public function myLovelyUsersSettingsPageCallback()
+    public function myLovelyUsersSettingsPageCallback(): void
     {
 
         ?>
@@ -174,7 +174,7 @@ class Core
         <?php
     }
 
-    public function myLovelyUsersSaveSettings()
+    public function myLovelyUsersSaveSettings(): void
     {
 
         register_setting('my_lovely_users_settings', 'my_lovely_users_endpoint');
