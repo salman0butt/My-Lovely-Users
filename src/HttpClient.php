@@ -13,7 +13,7 @@ class HttpClient implements HttpClientInterface
         $response = wp_remote_get($url);
         if (is_wp_error($response)) {
             throw new \RuntimeException(
-                sprintf('HTTP request failed: %s',$response->get_error_message())
+                sprintf('HTTP request failed: %s', $response->get_error_message())
             );
         }
         $statusCode = wp_remote_retrieve_response_code($response);

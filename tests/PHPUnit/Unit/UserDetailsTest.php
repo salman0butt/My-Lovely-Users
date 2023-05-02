@@ -72,7 +72,7 @@ class UserDetailsTest extends TestCase
         Monkey\Functions\when('esc_html')->returnArg();
         Monkey\Functions\when('sanitize_text_field')->justReturn($_POST['my_plugin_nonce']);
         Monkey\Functions\when('wp_unslash')->justReturn($_POST['my_plugin_nonce']);
-        Monkey\Functions\when('plugin_dir_path')->justReturn(dirname(__FILE__) . '/../../../src/');
+        Monkey\Functions\when('plugin_dir_path')->justReturn(dirname(__FILE__) . dirname(__DIR__).'/src/');
         Monkey\Functions\when('wp_send_json_success')
             ->justReturn(['success' => true, 'data' => ['html' => '<h1>Expected Result<h1>']]);
 

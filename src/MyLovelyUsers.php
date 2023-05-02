@@ -58,7 +58,7 @@ class MyLovelyUsers
 
         // Register and define other hooks
         $this->loader->addAction('init', [$this->core, 'registerCustomEndpoint']);
-        $this->loader->addAction('template_redirect', [$this->core, 'renderUsersTable']);
+        $this->loader->addAction('template_redirect', [$this->core, 'showUsersTable']);
         $this->loader->addAction('wp_ajax_fetch_user_details', [$this->core, 'fetchUserDetailsCallback']);
         $this->loader->addAction(
             'wp_ajax_nopriv_fetch_user_details',

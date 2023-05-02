@@ -26,7 +26,7 @@ class Core
         add_rewrite_tag('%my_lovely_users_table%', '1');
     }
 
-    public function renderUsersTable(): void
+    public function showUsersTable(): void
     {
 
         if (!get_query_var('my_lovely_users_table')) {
@@ -34,13 +34,17 @@ class Core
         }
 
         $users = $this->fetchUsersData();
-        include plugin_dir_path(__FILE__) . 'partials/users-table.php';
-
+        $this->renderUsersTable($users);
         exit;
     }
 
+    private function renderUsersTable(array $users): void
+    {
+        require_once dirname(__DIR__) . '/src/partials/users-table.php';
+    }
+
     // fetchUsersData call http request to get users data
-    public function fetchUsersData(): array
+    public function fetchUsersData(): ?array
     {
 
         // Check if data is in cache
@@ -67,7 +71,7 @@ class Core
     }
 
     // fetchUserDetailsCallback is called by ajax
-    public function fetchUserDetailsCallback(): array
+    public function fetchUserDetailsCallback(): string
     {
         $userId = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
 
@@ -116,10 +120,10 @@ class Core
         ]);
     }
 
-    public function rednerUserDetails(array $userDetails): string
+    private function rednerUserDetails(array $userDetails): string
     {
         ob_start();
-        require  plugin_dir_path(__FILE__) . 'partials/users-detail.php';
+        require_once  dirname(__DIR__) . '/src/partials/users-detail.php';
         return ob_get_clean();
     }
 }

@@ -110,3 +110,16 @@ Titles are optional, naturally.
 
 Markdown uses email style notation for blockquotes and I've been told:
 > Asterisks for *emphasis*. Double it up  for **strong**.
+
+
+
+
+Dependency Injection: The plugin uses Dependency Injection to decouple its code from specific implementation details of external dependencies. By using interfaces, rather than concrete classes, the plugin can more easily swap out one implementation for another without needing to modify the code that depends on it. This approach can make the code more modular and easier to maintain over time.
+
+CacheInterface: The plugin implements its own CacheInterface rather than relying on WordPress caching functions. This choice was likely made to provide more flexibility and control over how caching is handled within the plugin. By defining its own interface, the plugin can more easily switch to a different caching implementation in the future if needed.
+
+Http Client: The plugin uses an Http Client interface to perform HTTP requests. This choice was likely made to make it easier to mock the HTTP requests during testing, as well as to switch to a different HTTP client implementation in the future if needed.
+
+Custom Endpoint: The plugin registers its own custom endpoint for the users table rather than relying on a WordPress shortcode or widget. This choice was likely made to provide more control over the display of the users table, as well as to allow for more flexibility in how the table is integrated with other WordPress content.
+
+Nonces: The plugin uses WordPress nonces to provide security for AJAX requests. This choice was likely made to prevent CSRF attacks and ensure that only authorized users can access the plugin's AJAX functions.
