@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Inpsyde\MyLovelyUsers;
+namespace Inpsyde\MyLovelyUsers\Lib;
 
 use RuntimeException;
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;

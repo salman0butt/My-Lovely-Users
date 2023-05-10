@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-use Inpsyde\MyLovelyUsers\Core;
-use Inpsyde\MyLovelyUsers\HttpClient;
-use Inpsyde\MyLovelyUsers\Lib\MyCache;
+use Inpsyde\MyLovelyUsers\Setting;
+use Inpsyde\MyLovelyUsers\UsersTable;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
+use Inpsyde\MyLovelyUsers\EndpointRegistration;
+use Inpsyde\MyLovelyUsers\MyLovelyUsersActivator;
+use Inpsyde\MyLovelyUsers\MyLovelyUsersDeactivator;
 /**
  * The plugin bootstrap file
  *
@@ -37,34 +39,24 @@ if (! defined('WPINC')) {
 
 define('MY_LOVELY_USERS_VERSION', '1.0.0');
 define('MY_LOVELY_USERS_NAME', 'my-lovely-users');
+define('MY_LOVELY_USERS_ENDPOINT', 'my-lovely-users-table');
+define('MY_LOVELY_USERS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
-define('PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
+require_once MY_LOVELY_USERS_PLUGIN_DIR . 'vendor/autoload.php';
 
-require_once PLUGIN_DIR_PATH . 'vendor/autoload.php';
+register_activation_hook( __FILE__, [MyLovelyUsersActivator::class, 'activate'] );
 
-function my_plugin_activation() {
-    if( !get_option('my_lovely_users_endpoint') ) {
-        add_option('my_lovely_users_endpoint', 'my-lovely-users-table');
-    }
-    // flush rewrite rules on activation
-    flush_rewrite_rules();
-}
-register_activation_hook( __FILE__, 'my_plugin_activation' );
+register_deactivation_hook( __FILE__, [MyLovelyUsersDeactivator::class, 'deactivate'] );
 
-function my_plugin_deactivation() {
-    // flush rewrite rules on deactivation
-    flush_rewrite_rules();
-}
-register_deactivation_hook( __FILE__, 'my_plugin_deactivation' );
-
-
-function run_my_lovely_users_table_plugin()
+function my_lovely_users_init()
 {
-    $cache = new MyCache();
-    $httpClient = new HttpClient();
-    $core = new Core($cache, $httpClient);
+    $endpointRegistration = new EndpointRegistration();
+    $setting = new Setting();
+
+    $usersTable = new UsersTable();
+    $userDetails = new UserDetails();
     
-    class_exists(MyLovelyUsers::class) && MyLovelyUsers::instance($core);
+    new MyLovelyUsers($endpointRegistration, $setting, $usersTable, $userDetails);
 }
 
-run_my_lovely_users_table_plugin();
+add_action('plugins_loaded', 'my_lovely_users_init');

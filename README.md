@@ -36,7 +36,7 @@ MY_LOVELY_USERS_VERSION - the version number of the plugin (default is 1.0.0)
 MY_LOVELY_USERS_NAME - the name of the plugin (default is my-lovely-users)
 
 ## Cache
-The plugin implements its own CacheInterface rather than relying on WordPress. This choice was likely made to provide more flexibility and control over how caching is handled within the plugin. By defining its own interface, the plugin can more easily switch to a different caching implementation in the future if needed. WE Made Own MyCache Class and Used WordPress transient Functions as cache as for now in future we can use redis memcache etc.
+The plugin implements its own CacheInterface rather than relying on WordPress. This choice was likely made to provide more flexibility and control over how caching is handled within the plugin. By defining its own interface, the plugin can more easily switch to a different caching implementation in the future if needed. WE Made Own WpCache Class and Used WordPress transient Functions as cache as for now in future we can use redis memcache etc.
 
 ## Running Tests
 
@@ -59,7 +59,7 @@ To run PHPCS, run the following command
 
 1. Dependency Injection: The plugin uses Dependency Injection to decouple its code from specific implementation details of external dependencies. By using interfaces, rather than concrete classes, the plugin can more easily swap out one implementation for another without needing to modify the code that depends on it. This approach can make the code more modular and easier to maintain over time.
 
-1. CacheInterface: The plugin implements its own CacheInterface rather than relying on WordPress caching functions (WE Make Own MyCache Class and Implemented WordPress transient Functions as cache). This choice was likely made to provide more flexibility and control over how caching is handled within the plugin. By defining its own interface, the plugin can more easily switch to a different caching implementation in the future if needed.
+1. CacheInterface: The plugin implements its own CacheInterface rather than relying on WordPress caching functions (WE Make Own WpCache Class and Implemented WordPress transient Functions as cache). This choice was likely made to provide more flexibility and control over how caching is handled within the plugin. By defining its own interface, the plugin can more easily switch to a different caching implementation in the future if needed.
 
 1. Http Client: The plugin uses an Http Client interface to perform HTTP requests. This choice was likely made to make it easier to mock the HTTP requests during testing, as well as to switch to a different HTTP client implementation in the future if needed.
 

@@ -6,7 +6,7 @@ namespace Inpsyde\MyLovelyUsers\Lib;
 
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 
-class MyCache implements CacheInterface
+class WpCache implements CacheInterface
 {
     public function get(string $key): mixed
     {
