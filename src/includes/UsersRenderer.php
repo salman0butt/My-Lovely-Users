@@ -38,7 +38,7 @@ class UsersRenderer implements UserRendererInterface
                             <th>' . esc_html__('Email', 'my-lovely-users') . '</th>
                         </tr>
                     </thead>';
-// Create the table body.
+        // Create the table body.
         $body = '<tbody>';
         if ($users && count($users) > 0) {
             foreach ($users as $user) {
@@ -76,7 +76,7 @@ class UsersRenderer implements UserRendererInterface
         $html .= $body;
         $html .= '</table>';
         $html .= '</div>';
-        // User details will be displayed here via AJAX 
+        // User details will be displayed here via AJAX
         $html .= '<div id="user-details-container"></div>';
 
         return $html;

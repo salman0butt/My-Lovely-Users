@@ -1,8 +1,10 @@
 <?php
+
 /**
 * Interface for rendering users
 *
 */
+
 declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Interfaces;

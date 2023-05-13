@@ -1,7 +1,9 @@
 <?php
+
 /**
  * CacheInterface represents an interface for a cache implementation.
 */
+
 declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Interfaces;

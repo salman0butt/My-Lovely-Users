@@ -1,4 +1,5 @@
 <?php
+
 /**
  * UserDetails class provides functionality to fetch user details via AJAX request and render them.
  *
@@ -8,6 +9,7 @@
  * @subpackage MyLovelyUsers\includes
  * @author     Salman Raza <salman0butt@gmail.com>
 */
+
 declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
@@ -64,9 +66,7 @@ class UserDetails
     public function render($user): void
     {
         $this->userDeatilRenderer->render($user);
-       
     }
-
 
     /**
      * Handles AJAX request to fetch user details.
@@ -88,7 +88,6 @@ class UserDetails
         if (!$nonceVerified) {
             wp_send_json_error('Security check failed.');
         }
-
 
         try {
              // Fetch user details using the UserFetcher instance.

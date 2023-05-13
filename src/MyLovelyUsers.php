@@ -22,45 +22,45 @@ use Inpsyde\MyLovelyUsers\Includes\UserTable;
 
 class MyLovelyUsers
 {
-    /** 
+    /**
      * Plugin name
-     * 
-     * @var string $pluginName 
+     *
+     * @var string $pluginName
     */
     private string $pluginName;
 
-    /** 
+    /**
      * Plugin Version
-     * 
-     * @var string $version 
+     *
+     * @var string $version
     */
     private string $version;
 
-    /** 
+    /**
      * EndpointRegistration instance to register endpoint
-     * 
-     * @var EndpointRegistrationInterface $endpointRegistration 
+     *
+     * @var EndpointRegistrationInterface $endpointRegistration
     */
     private EndpointRegistrationInterface $endpointRegistration;
 
-    /** 
+    /**
      * Setting instance to plugin settings
-     * 
-     * @var SettingInterface $setting 
+     *
+     * @var SettingInterface $setting
     */
     private SettingInterface $setting;
 
-    /** 
+    /**
      * UserTable instance to render users table
-     * 
-     * @var UserTable $usersTable 
+     *
+     * @var UserTable $usersTable
     */
     private UserTable $usersTable;
 
-    /** 
+    /**
      * UserDetails instance to render single user details
-     * 
-     * @var UserDetails $UserDetails 
+     *
+     * @var UserDetails $UserDetails
     */
     private UserDetails $UserDetails;
 
@@ -94,7 +94,7 @@ class MyLovelyUsers
 
     /**
      * Registers the hooks for the plugin.
-     * 
+     *
      * @since 1.0.0
      * @return void
     */

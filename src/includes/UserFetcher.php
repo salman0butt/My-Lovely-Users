@@ -17,7 +17,6 @@ namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 use Exception;
-
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 

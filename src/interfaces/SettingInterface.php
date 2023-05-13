@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Interface for plugin settings.
 */
+
 declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Interfaces;

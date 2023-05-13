@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Interface for fetching users.
 *
@@ -16,7 +17,7 @@ interface UserFetcherInterface
      * @return array An array of users.
      */
     public function fetchUsers(): array;
-    
+
     /**
      * Fetches a single user by ID.
      *

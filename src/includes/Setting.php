@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Class Setting
  *
  * Represents the plugin settings.
- * 
+ *
  * @link       https://github.com/salman0butt
  * @since      1.0.0
  * @package    MyLovelyUsers
@@ -28,7 +29,6 @@ class Setting implements SettingInterface
         add_action('admin_init', [$this, 'saveSettings']);
         add_action('admin_menu', [$this, 'settingsPage']);
     }
-
 
     /**
      * Adds the plugin settings page to the WordPress admin menu.

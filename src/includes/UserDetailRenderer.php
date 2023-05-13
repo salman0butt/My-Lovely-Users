@@ -42,7 +42,7 @@ class UserDetailRenderer implements UserRendererInterface
                 <th>' . esc_html__('Address', 'my-lovely-users') . '</th>
             </tr>
         </thead>';
-// Create the table body.
+        // Create the table body.
         $body = '<tbody>
             <tr>
                 <th scope="row">' . (isset($user['id']) ? esc_html($user['id']) : '') . '</th>
@@ -63,7 +63,7 @@ class UserDetailRenderer implements UserRendererInterface
                         '</td>
             </tr>
             </tbody>';
-// Create the final HTML output.
+        // Create the final HTML output.
         $html = '<h3 class="text-center mb-4">' . esc_html__('User Detail', 'my-lovely-users') . '</h3>';
         $html .= '<div class="table-container">';
         $html .= '<table id="users-details">';
@@ -71,7 +71,7 @@ class UserDetailRenderer implements UserRendererInterface
         $html .= $body;
         $html .= '</table>';
         $html .= '</div>';
-        
+
         return $html;
     }
 }
