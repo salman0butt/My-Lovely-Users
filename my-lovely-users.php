@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
-use Inpsyde\MyLovelyUsers\Setting;
-use Inpsyde\MyLovelyUsers\UsersTable;
+use Inpsyde\MyLovelyUsers\Lib\WpCache;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
-use Inpsyde\MyLovelyUsers\EndpointRegistration;
-use Inpsyde\MyLovelyUsers\MyLovelyUsersActivator;
-use Inpsyde\MyLovelyUsers\MyLovelyUsersDeactivator;
+use Inpsyde\MyLovelyUsers\Lib\HttpClient;
+use Inpsyde\MyLovelyUsers\Includes\Setting;
+use Inpsyde\MyLovelyUsers\Includes\UserFetcher;
+use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
+use Inpsyde\MyLovelyUsers\Includes\UserDetailRenderer;
+use Inpsyde\MyLovelyUsers\Includes\EndpointRegistration;
+use Inpsyde\MyLovelyUsers\Includes\MyLovelyUsersActivator;
+use Inpsyde\MyLovelyUsers\Includes\MyLovelyUsersDeactivator;
 /**
  * The plugin bootstrap file
  *
@@ -37,26 +41,32 @@ if (! defined('WPINC')) {
     die;
 }
 
+// Define constants
 define('MY_LOVELY_USERS_VERSION', '1.0.0');
 define('MY_LOVELY_USERS_NAME', 'my-lovely-users');
 define('MY_LOVELY_USERS_ENDPOINT', 'my-lovely-users-table');
 define('MY_LOVELY_USERS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
+// Load dependencies
 require_once MY_LOVELY_USERS_PLUGIN_DIR . 'vendor/autoload.php';
 
+// Activate and deactivate hooks
 register_activation_hook( __FILE__, [MyLovelyUsersActivator::class, 'activate'] );
-
 register_deactivation_hook( __FILE__, [MyLovelyUsersDeactivator::class, 'deactivate'] );
 
+// Initialize the plugin
 function my_lovely_users_init()
 {
     $endpointRegistration = new EndpointRegistration();
     $setting = new Setting();
 
-    $usersTable = new UsersTable();
-    $userDetails = new UserDetails();
+    $wpCache = new WpCache();
+    $httpClient = new HttpClient();
+    $userFetcher = new UserFetcher($wpCache, $httpClient);
+    $userRenderer = new UsersRenderer();
+    $userDetailsRenderer = new UserDetailRenderer();
     
-    new MyLovelyUsers($endpointRegistration, $setting, $usersTable, $userDetails);
+    new MyLovelyUsers($endpointRegistration, $setting, $userFetcher, $userRenderer, $userDetailsRenderer);
 }
 
 add_action('plugins_loaded', 'my_lovely_users_init');

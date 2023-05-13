@@ -1,32 +1,54 @@
 <?php
+/**
+ * Class Setting
+ *
+ * Represents the plugin settings.
+ * 
+ * @link       https://github.com/salman0butt
+ * @since      1.0.0
+ * @package    MyLovelyUsers
+ * @subpackage MyLovelyUsers\includes
+ * @author     Salman Raza <salman0butt@gmail.com>
+*/
 
 declare(strict_types=1);
 
-namespace Inpsyde\MyLovelyUsers;
+namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Inpsyde\MyLovelyUsers\Interfaces\SettingInterface;
 
 class Setting implements SettingInterface
 {
+    /**
+     * Registers the hooks for plugin settings.
+     */
+    public function register(): void
+    {
 
-    public function register(): void {
-        add_action('admin_init', [$this, 'myLovelyUsersSaveSettings']);
-        add_action('admin_menu', [$this, 'save']);
+        add_action('admin_init', [$this, 'saveSettings']);
+        add_action('admin_menu', [$this, 'settingsPage']);
     }
-    
-    public function SettingsPage(): void
+
+
+    /**
+     * Adds the plugin settings page to the WordPress admin menu.
+     */
+    public function settingsPage(): void
     {
         add_options_page(
             'My Lovely Users Settings',
             'My Lovely Users',
             'manage_options',
             'my_lovely_users_settings',
-            'display'
+            [$this, 'displayPage']
         );
     }
 
-    public function display(): void {
-        // display the plugin settings form
+    /**
+     * Displays the plugin settings page.
+    */
+    public function displayPage(): void
+    {
         ?>
         <div class="wrap">
             <h1>My Lovely Users Settings</h1>
@@ -50,9 +72,12 @@ class Setting implements SettingInterface
         </div>
         <?php
     }
-    
-    public function save() {
-        // save the plugin settings
+
+    /**
+    * Saves the plugin settings.
+    */
+    public function saveSettings(): void
+    {
         register_setting('my_lovely_users_settings', 'my_lovely_users_endpoint');
     }
 }

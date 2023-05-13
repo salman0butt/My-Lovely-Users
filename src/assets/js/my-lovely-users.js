@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 if (response.success) {
                   // Display the user details in the container
-                    userDetailsContainer.html(response.data.html);
+                    userDetailsContainer.html(response.data);
                   // get the position of the div you want to scroll to
                     const TOP_PADDING = 100;
                     const position = userDetailsContainer.offset().top - TOP_PADDING;
