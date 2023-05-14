@@ -28,13 +28,13 @@ class UserTable
      * @var UserFetcherInterface
      */
     private UserFetcherInterface $userFetcher;
-/**
+    /**
      * UserRendererInterface instance to render users.
      *
      * @var UserRendererInterface
      */
     private UserRendererInterface $userRenderer;
-/**
+    /**
      * Constructor.
      *
      * @param UserFetcherInterface $userFetcher    UserFetcherInterface instance to fetch users.

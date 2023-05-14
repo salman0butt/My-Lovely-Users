@@ -11,6 +11,11 @@
             "Inpsyde\\MyLovelyUsers\\Test\\": "tests/PHPUnit/Unit"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Inpsyde\\MyLovelyUsers\\Tests\\Unit\\": "tests/PHPUnit/Unit/"
+        }
+    },
     "require": {
         "php": ">=8.1"
     },
