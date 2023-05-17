@@ -5,11 +5,11 @@ declare (strict_types = 1);
 namespace Inpsyde\MyLovelyUsers\Test;
 
 use Inpsyde\MyLovelyUsers\Includes\UserFetcher;
+use Inpsyde\MyLovelyUsers\Test\AbstractTestCase;
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
-use PHPUnit\Framework\TestCase;
 
-class UserFetcherTest extends TestCase
+class UserFetcherTest extends AbstractTestCase
 {
     private CacheInterface $cacheMock;
     private HttpClientInterface $httpClientMock;

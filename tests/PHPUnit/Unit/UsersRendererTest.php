@@ -4,11 +4,11 @@ declare (strict_types = 1);
 
 namespace Inpsyde\MyLovelyUsers\Test;
 
-use PHPUnit\Framework\TestCase;
-use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
 use Brain\Monkey;
+use Inpsyde\MyLovelyUsers\Test\AbstractTestCase;
+use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
 
-class UsersRendererTest  extends TestCase
+class UsersRendererTest  extends AbstractTestCase
 {
 
     private UsersRenderer $renderer;
