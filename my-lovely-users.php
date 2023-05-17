@@ -59,18 +59,22 @@ register_deactivation_hook( __FILE__, [MyLovelyUsersDeactivator::class, 'deactiv
 // Initialize the plugin
 function my_lovely_users_init()
 {
+    // Create instances of required classes and components
+    $wpCache = new WpCache(); // Provides caching functionality
+    $httpClient = new HttpClient(); // Performs HTTP requests
+    $userFetcher = new UserFetcher($wpCache, $httpClient); // Fetches user data
+
+    $userRenderer = new UsersRenderer(); // Renders user data for display
+    $userDetailRenderer = new UserDetailRenderer(); // Renders individual user details
+
+    $usersTable = new UserTable($userFetcher, $userRenderer); // Handles fetching and rendering a table of users
+    $userDetails = new UserDetails($userFetcher, $userDetailRenderer); // Handles fetching and rendering user details
     $endpointRegistration = new EndpointRegistration();
     $setting = new Setting();
 
-    $wpCache = new WpCache();
-    $httpClient = new HttpClient();
-    $userFetcher = new UserFetcher($wpCache, $httpClient);
-    $userRenderer = new UsersRenderer();
-    $userDetailRenderer = new UserDetailRenderer();
-    $usersTable = new UserTable($userFetcher, $userRenderer);
-    $userDetails = new UserDetails($userFetcher, $userDetailRenderer);
-    
-    new MyLovelyUsers($endpointRegistration, $setting, $userFetcher, $usersTable, $userDetails);
+    // Create an instance of the MyLovelyUsers plugin and pass the dependencies
+    new MyLovelyUsers($endpointRegistration, $setting, $usersTable, $userDetails);
 }
 
+// Hook the initialization function to the 'plugins_loaded' action
 add_action('plugins_loaded', 'my_lovely_users_init');
