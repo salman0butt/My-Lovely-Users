@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers;
 
 use Inpsyde\MyLovelyUsers\Interfaces\SettingInterface;
-use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
-use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
+use Inpsyde\MyLovelyUsers\AssetLoader;
+
+use Inpsyde\MyLovelyUsers\Interfaces\UserDetailsInterface;
+use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\EndpointRegistrationInterface;
-use Inpsyde\MyLovelyUsers\Includes\UserDetails;
-use Inpsyde\MyLovelyUsers\Includes\UserTable;
 
 class MyLovelyUsers
 {
@@ -51,40 +51,38 @@ class MyLovelyUsers
     private SettingInterface $setting;
 
     /**
-     * UserTable instance to render users table
+     * UserTableInterface instance to render users table
      *
-     * @var UserTable $usersTable
+     * @var UserTableInterface $usersTable
     */
-    private UserTable $usersTable;
+    private UserTableInterface $usersTable;
 
     /**
-     * UserDetails instance to render single user details
+     * UserDetailsInterface instance to render single user details
      *
-     * @var UserDetails $UserDetails
+     * @var UserDetailsInterface $userDetails
     */
-    private UserDetails $UserDetails;
+    private UserDetailsInterface $userDetails;
 
      /**
      * Initializes a new instance of the MyLovelyUsers class.
      *
      * @param EndpointRegistrationInterface $endpointRegistration An EndpointRegistrationInterface instance to register the plugin's endpoint.
      * @param SettingInterface $setting A SettingInterface instance to manage the plugin's settings.
-     * @param UserFetcherInterface $userFetcher A UserFetcherInterface instance to fetch users.
-     * @param UserRendererInterface $userRenderer A UserRendererInterface instance to render the plugin's user table.
-     * @param UserRendererInterface $userDetailRenderer A UserRendererInterface instance to render a single user's details.
+     * @param UserTableInterface $usersTable A UserTableInterface instance to render the plugin's user table.
+     * @param UserDetailsInterface $userDetails A UserTableInterface instance to render a single user's details.
      */
     public function __construct(
         EndpointRegistrationInterface $endpointRegistration,
         SettingInterface $setting,
-        UserFetcherInterface $userFetcher,
-        UserRendererInterface $userRenderer,
-        UserRendererInterface $userDetailRenderer,
+        UserTableInterface $usersTable,
+        UserDetailsInterface $userDetails
     ) {
 
         $this->endpointRegistration = $endpointRegistration;
         $this->setting = $setting;
-        $this->usersTable = new UserTable($userFetcher, $userRenderer);
-        $this->UserDetails = new UserDetails($userFetcher, $userDetailRenderer);
+        $this->usersTable = $usersTable;
+        $this->userDetails = $userDetails;
 
         $this->version = defined('MY_LOVELY_USERS_VERSION') ? MY_LOVELY_USERS_VERSION : '1.0.0';
         $this->pluginName = defined('MY_LOVELY_USERS_NAME') ? MY_LOVELY_USERS_NAME : 'my-lovely-users-table-plugin';
@@ -113,40 +111,22 @@ class MyLovelyUsers
         $this->usersTable->register();
 
         // Register the user details
-        $this->UserDetails->register();
+        $this->userDetails->register();
     }
 
     /**
      * Enqueue the plugin's CSS and JavaScript assets.
      *
      * This method is called on the `wp_enqueue_scripts` action and adds the
-     * CSS and JavaScript files needed for the plugin.
+     * CSS and JavaScript files using AssetLoader static class needed for the plugin.
      *
      * @since 1.0.0
      * @return void
      */
     public function enqueueScripts(): void
     {
-        wp_enqueue_style(
-            $this->pluginName,
-            plugin_dir_url(__FILE__) . 'assets/css/my-lovely-users.css',
-            [],
-            $this->version,
-            'all'
-        );
-
-        wp_enqueue_script(
-            $this->pluginName,
-            plugin_dir_url(__FILE__) . 'assets/js/my-lovely-users.js',
-            ['jquery'],
-            $this->version,
-            true
-        );
-
-        wp_localize_script($this->pluginName, 'myPlugin', [
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('my_lovely_user_nonce'),
-        ]);
+        AssetLoader::enqueueStyles($this->pluginName, $this->version);
+        AssetLoader::enqueueScripts($this->pluginName, $this->version);
     }
 
     /**

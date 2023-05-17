@@ -6,6 +6,8 @@ use Inpsyde\MyLovelyUsers\Lib\WpCache;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
 use Inpsyde\MyLovelyUsers\Lib\HttpClient;
 use Inpsyde\MyLovelyUsers\Includes\Setting;
+use Inpsyde\MyLovelyUsers\Includes\UserTable;
+use Inpsyde\MyLovelyUsers\Includes\UserDetails;
 use Inpsyde\MyLovelyUsers\Includes\UserFetcher;
 use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
 use Inpsyde\MyLovelyUsers\Includes\UserDetailRenderer;
@@ -64,9 +66,11 @@ function my_lovely_users_init()
     $httpClient = new HttpClient();
     $userFetcher = new UserFetcher($wpCache, $httpClient);
     $userRenderer = new UsersRenderer();
-    $userDetailsRenderer = new UserDetailRenderer();
+    $userDetailRenderer = new UserDetailRenderer();
+    $usersTable = new UserTable($userFetcher, $userRenderer);
+    $userDetails = new UserDetails($userFetcher, $userDetailRenderer);
     
-    new MyLovelyUsers($endpointRegistration, $setting, $userFetcher, $userRenderer, $userDetailsRenderer);
+    new MyLovelyUsers($endpointRegistration, $setting, $userFetcher, $usersTable, $userDetails);
 }
 
 add_action('plugins_loaded', 'my_lovely_users_init');

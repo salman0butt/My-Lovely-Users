@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
+use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
+
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
 
-class UserTable
+class UserTable implements UserTableInterface
 {
     /**
      * UserFetcherInterface instance to fetch users
