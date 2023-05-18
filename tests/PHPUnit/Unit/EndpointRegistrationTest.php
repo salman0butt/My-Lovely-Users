@@ -10,14 +10,19 @@ use Brain\Monkey;
 
 class EndpointRegistrationTest extends AbstractTestCase
 {
-    /**
-     * Test registerCustomEndpoint method.
-     */
-    public function testRegisterCustomEndpoint()
+
+    private EndpointRegistration $endpointRegistration;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         // Mock the get_option function.
         Monkey\Functions\when('get_option')
             ->justReturn(false);
+
+        Monkey\Functions\when('sanitize_text')
+            ->justReturn('my-lovely-users-table');
 
         // Expect the add_rewrite_rule function to be called.
         Monkey\Functions\expect('add_rewrite_rule')
@@ -37,8 +42,16 @@ class EndpointRegistrationTest extends AbstractTestCase
         Monkey\Functions\expect('flush_rewrite_rules')
             ->once();
 
-        $endpoint_registration = new EndpointRegistration();
-        $endpoint_registration->registerCustomEndpoint();
+        $this->endpointRegistration = new EndpointRegistration();
+    }
+
+    /**
+     * Test registerCustomEndpoint method.
+     */
+    public function testRegisterCustomEndpoint()
+    {
+
+        $this->endpointRegistration->registerCustomEndpoint();
 
         // Assert that the method execution completes without throwing an exception.
         $this->expectNotToPerformAssertions();

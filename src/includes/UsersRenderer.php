@@ -30,8 +30,8 @@ class UsersRenderer implements UserRendererInterface
      */
     public function render(array $users): string
     {
-        $templatePath = plugin_dir_path(__FILE__) . 'templates/users-table.php';
-        
+        $templatePath = plugin_dir_path(__FILE__) . '/templates/users-table.php';
+
         if (!file_exists($templatePath)) {
             throw new RuntimeException('Template file not found.');
         }

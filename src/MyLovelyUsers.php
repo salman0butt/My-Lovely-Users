@@ -37,6 +37,13 @@ class MyLovelyUsers
     private string $version;
 
     /**
+     * The single instance of the MyLovelyUsers class.
+     *
+     * @var MyLovelyUsers|null
+     */
+    private static ?MyLovelyUsers $instance = null;
+
+    /**
      * The instance of EndpointRegistrationInterface to register endpoints.
      *
      * @var EndpointRegistrationInterface
@@ -87,6 +94,34 @@ class MyLovelyUsers
         $this->pluginName = defined('MY_LOVELY_USERS_NAME') ? MY_LOVELY_USERS_NAME : 'my-lovely-users-table-plugin';
 
         $this->registerHooks();
+    }
+
+        /**
+     * Retrieves the single instance of the MyLovelyUsers class.
+     *
+     * @param EndpointRegistrationInterface $endpointRegistration An instance of EndpointRegistrationInterface to register the plugin's endpoint.
+     * @param SettingInterface             $setting               An instance of SettingInterface to manage the plugin's settings.
+     * @param UserTableInterface           $usersTable            An instance of UserTableInterface to render the plugin's user table.
+     * @param UserDetailsInterface         $userDetails           An instance of UserDetailsInterface to render a single user's details.
+     *
+     * @return MyLovelyUsers The single instance of the MyLovelyUsers class.
+     */
+    public static function getInstance(
+        EndpointRegistrationInterface $endpointRegistration,
+        SettingInterface $setting,
+        UserTableInterface $usersTable,
+        UserDetailsInterface $userDetails
+    ): MyLovelyUsers {
+        if (self::$instance === null) {
+            self::$instance = new self(
+                $endpointRegistration,
+                $setting,
+                $usersTable,
+                $userDetails
+            );
+        }
+
+        return self::$instance;
     }
 
     /**
