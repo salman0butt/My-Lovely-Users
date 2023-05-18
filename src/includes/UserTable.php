@@ -19,7 +19,6 @@ namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
-
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
 
 class UserTable implements UserTableInterface

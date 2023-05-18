@@ -15,7 +15,6 @@ namespace Inpsyde\MyLovelyUsers;
 
 use Inpsyde\MyLovelyUsers\Interfaces\SettingInterface;
 use Inpsyde\MyLovelyUsers\AssetLoader;
-
 use Inpsyde\MyLovelyUsers\Interfaces\UserDetailsInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\EndpointRegistrationInterface;

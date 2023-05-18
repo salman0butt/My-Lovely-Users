@@ -10,7 +10,7 @@
  * @author     Salman Raza <salman0butt@gmail.com>
  */
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 
@@ -96,7 +96,7 @@ class UserDetails implements UserDetailsInterface
             $user = $this->userFetcher->fetchUser($userId);
             // Render user details using the UserRenderer instance.
             $output = $this->userDeatilRenderer->render($user);
-            
+
             wp_send_json_success($output);
         } catch (Exception $exp) {
             error_log("Error fetching user details: " . $exp->getMessage());

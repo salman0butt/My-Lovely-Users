@@ -30,7 +30,7 @@ class UserDetailRenderer implements UserRendererInterface
     public function render(array $user): string
     {
         ob_start();
-        require_once plugin_dir_path(__FILE__).'/templates/users-details.php';
+        require_once plugin_dir_path(__FILE__) . '/templates/users-details.php';
         return ob_get_clean();
     }
 }
