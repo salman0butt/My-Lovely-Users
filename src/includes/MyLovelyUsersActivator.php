@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired during plugin activation
  *
@@ -9,30 +8,76 @@
  * @since      1.0.0
  * @package    MyLovelyUsers
  * @subpackage MyLovelyUsers\includes
- * @author     Salman Raza <salman0butt@gmail.com>
+ * @author     Salman Raza
  */
 
- declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
+
+use Exception;
 
 class MyLovelyUsersActivator
 {
     /**
-    * Activates the plugin.
-    *
-    * If the option 'my_lovely_users_endpoint' does not exist, it adds the option with the value
-    * of MY_LOVELY_USERS_ENDPOINT. Then, it flushes the rewrite rules.
-    *
-    * @since 1.0.0
-    */
+     * Activate the plugin.
+     *
+     * If the option 'my_lovely_users_endpoint' does not exist, it adds the option with the value
+     * of MY_LOVELY_USERS_ENDPOINT. Then, it flushes the rewrite rules.
+     *
+     * @since 1.0.0
+     */
     public static function activate(): void
     {
-        // If the option does not exist, add it
-        if (!get_option('my_lovely_users_endpoint')) {
-            add_option('my_lovely_users_endpoint', MY_LOVELY_USERS_ENDPOINT);
+        try {
+            // If the option does not exist, add it
+            if (!get_option('my_lovely_users_endpoint')) {
+                self::addEndpointOption();
+            }
+            // Flush rewrite rules on activation
+            self::flushRewriteRules();
+        } catch (\Exception $e) {
+            // Handle the error or exception here
+            error_log('Error: ' . $e->getMessage());
         }
-        // Flush rewrite rules on activation
-        flush_rewrite_rules();
+    }
+
+    /**
+     * Add the option for the endpoint value.
+     *
+     * @since 1.0.0
+     */
+    private static function addEndpointOption(): void
+    {
+        $optionName = 'my_lovely_users_endpoint';
+        $endpointValue = self::getEndpointValue();
+
+        // Add the option with the sanitized endpoint value
+        add_option($optionName, sanitize_text_field($endpointValue));
+    }
+
+    /**
+     * Get the value for the endpoint constant.
+     *
+     * @return string
+     * @since 1.0.0
+     */
+    private static function getEndpointValue(): string
+    {
+        // You can define or retrieve the value of MY_LOVELY_USERS_ENDPOINT here
+        return MY_LOVELY_USERS_ENDPOINT;
+    }
+
+    /**
+     * Flush rewrite rules.
+     *
+     * @throws Exception If flushing rewrite rules fails.
+     * @since 1.0.0
+     */
+    private static function flushRewriteRules(): void
+    {
+        if (!flush_rewrite_rules()) {
+            throw new Exception('Flushing rewrite rules failed.');
+        }
     }
 }

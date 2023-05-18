@@ -1,7 +1,7 @@
 <?php
 
 /**
-* The main plugin class that defines the core functionality of the My Lovely Users plugin.
+ * The main plugin class that defines the core functionality of the My Lovely Users plugin.
  *
  * @link       https://github.com/salman0butt
  * @since      1.0.0
@@ -9,67 +9,68 @@
  * @author     Salman Raza <salman0butt@gmail.com>
  */
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Inpsyde\MyLovelyUsers;
 
-use Inpsyde\MyLovelyUsers\Interfaces\SettingInterface;
+use Exception;
 use Inpsyde\MyLovelyUsers\AssetLoader;
+use Inpsyde\MyLovelyUsers\Interfaces\EndpointRegistrationInterface;
+use Inpsyde\MyLovelyUsers\Interfaces\SettingInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserDetailsInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
-use Inpsyde\MyLovelyUsers\Interfaces\EndpointRegistrationInterface;
 
 class MyLovelyUsers
 {
     /**
-     * Plugin name
+     * The name of the plugin.
      *
-     * @var string $pluginName
-    */
+     * @var string
+     */
     private string $pluginName;
 
     /**
-     * Plugin Version
+     * The version of the plugin.
      *
-     * @var string $version
-    */
+     * @var string
+     */
     private string $version;
 
     /**
-     * EndpointRegistration instance to register endpoint
+     * The instance of EndpointRegistrationInterface to register endpoints.
      *
-     * @var EndpointRegistrationInterface $endpointRegistration
-    */
+     * @var EndpointRegistrationInterface
+     */
     private EndpointRegistrationInterface $endpointRegistration;
 
     /**
-     * Setting instance to plugin settings
+     * The instance of SettingInterface to manage plugin settings.
      *
-     * @var SettingInterface $setting
-    */
+     * @var SettingInterface
+     */
     private SettingInterface $setting;
 
     /**
-     * UserTableInterface instance to render users table
+     * The instance of UserTableInterface to render the user table.
      *
-     * @var UserTableInterface $usersTable
-    */
+     * @var UserTableInterface
+     */
     private UserTableInterface $usersTable;
 
     /**
-     * UserDetailsInterface instance to render single user details
+     * The instance of UserDetailsInterface to render a single user's details.
      *
-     * @var UserDetailsInterface $userDetails
-    */
+     * @var UserDetailsInterface
+     */
     private UserDetailsInterface $userDetails;
 
-     /**
+    /**
      * Initializes a new instance of the MyLovelyUsers class.
      *
-     * @param EndpointRegistrationInterface $endpointRegistration An EndpointRegistrationInterface instance to register the plugin's endpoint.
-     * @param SettingInterface $setting A SettingInterface instance to manage the plugin's settings.
-     * @param UserTableInterface $usersTable A UserTableInterface instance to render the plugin's user table.
-     * @param UserDetailsInterface $userDetails A UserTableInterface instance to render a single user's details.
+     * @param EndpointRegistrationInterface $endpointRegistration An instance of EndpointRegistrationInterface to register the plugin's endpoint.
+     * @param SettingInterface             $setting               An instance of SettingInterface to manage the plugin's settings.
+     * @param UserTableInterface           $usersTable            An instance of UserTableInterface to render the plugin's user table.
+     * @param UserDetailsInterface         $userDetails           An instance of UserDetailsInterface to render a single user's details.
      */
     public function __construct(
         EndpointRegistrationInterface $endpointRegistration,
@@ -77,7 +78,6 @@ class MyLovelyUsers
         UserTableInterface $usersTable,
         UserDetailsInterface $userDetails
     ) {
-
         $this->endpointRegistration = $endpointRegistration;
         $this->setting = $setting;
         $this->usersTable = $usersTable;
@@ -93,34 +93,37 @@ class MyLovelyUsers
      * Registers the hooks for the plugin.
      *
      * @since 1.0.0
-     * @return void
-    */
+     */
     private function registerHooks(): void
     {
-        // Register the scripts and styles
-        add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
+        try {
+            // Register the scripts and styles
+            add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
 
-        // Register the endpoint
-        $this->endpointRegistration->register();
+            // Register the endpoint
+            $this->endpointRegistration->register();
 
-        // Register the settings
-        $this->setting->register();
+            // Register the settings
+            $this->setting->register();
 
-        // Register the user table
-        $this->usersTable->register();
+            // Register the user table
+            $this->usersTable->register();
 
-        // Register the user details
-        $this->userDetails->register();
+            // Register the user details
+            $this->userDetails->register();
+        } catch (Exception $e) {
+            // Handle exceptions here
+            error_log("Error: " . $e->getMessage());
+        }
     }
 
     /**
-     * Enqueue the plugin's CSS and JavaScript assets.
+     * Enqueues the plugin's CSS and JavaScript assets.
      *
      * This method is called on the `wp_enqueue_scripts` action and adds the
-     * CSS and JavaScript files using AssetLoader static class needed for the plugin.
+     * CSS and JavaScript files needed for the plugin using the AssetLoader static class.
      *
      * @since 1.0.0
-     * @return void
      */
     public function enqueueScripts(): void
     {
@@ -129,27 +132,29 @@ class MyLovelyUsers
     }
 
     /**
-     * Get the plugin name.
+     * Retrieves the plugin name.
      *
      * Returns the name of the plugin.
      *
      * @since 1.0.0
+     *
      * @return string The plugin name.
      */
-    public function pluginName(): string
+    public function getPluginName(): string
     {
         return $this->pluginName;
     }
 
     /**
-     * Get the plugin version.
+     * Retrieves the plugin version.
      *
      * Returns the version of the plugin.
      *
      * @since 1.0.0
+     *
      * @return string The plugin version.
      */
-    public function version(): string
+    public function getVersion(): string
     {
         return $this->version;
     }

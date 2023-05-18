@@ -115,7 +115,7 @@ class UserFetcher implements UserFetcherInterface
      *
      * @return array The fetched user data.
      *
-     * @throws \Exception If an error occurs while fetching user data from the API.
+     * @throws Exception If an error occurs while fetching user data from the API.
      */
     public function fetchUser(int $userId): array
     {

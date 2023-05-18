@@ -10,9 +10,9 @@
  * @package    MyLovelyUsers
  * @subpackage MyLovelyUsers\includes
  * @author     Salman Raza <salman0butt@gmail.com>
-*/
+ */
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 
@@ -46,36 +46,15 @@ class Setting implements SettingInterface
 
     /**
      * Displays the plugin settings page.
-    */
+     */
     public function displayPage(): void
     {
-        ?>
-        <div class="wrap">
-            <h1>My Lovely Users Settings</h1>
-            <form method="post" action="options.php">
-                <?php settings_fields('my_lovely_users_settings'); ?>
-                <?php do_settings_sections('my_lovely_users_settings'); ?>
-                <table class="form-table">
-                    <tr valign="top">
-                        <th scope="row">Endpoint URL</th>
-                        <td>
-                            <input 
-                            type="text" 
-                            name="my_lovely_users_endpoint" 
-                            value="<?php echo esc_attr(get_option('my_lovely_users_endpoint')); ?>"
-                            >
-                        </td>
-                    </tr>
-                </table>
-                <?php submit_button(); ?>
-            </form>
-        </div>
-        <?php
+        include_once plugin_dir_path(__FILE__) . '/templates/users-table.php';
     }
 
     /**
-    * Saves the plugin settings.
-    */
+     * Saves the plugin settings.
+     */
     public function saveSettings(): void
     {
         register_setting('my_lovely_users_settings', 'my_lovely_users_endpoint');

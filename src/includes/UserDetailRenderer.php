@@ -29,8 +29,15 @@ class UserDetailRenderer implements UserRendererInterface
      */
     public function render(array $user): string
     {
+
+        $templatePath = plugin_dir_path(__FILE__) . '/templates/users-details.php';
+        
+        if (!file_exists($templatePath)) {
+            throw new RuntimeException('Template file not found.');
+        }
+        
         ob_start();
-        require_once plugin_dir_path(__FILE__) . '/templates/users-details.php';
+        include $templatePath;
         return ob_get_clean();
     }
 }
