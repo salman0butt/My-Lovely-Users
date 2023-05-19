@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class UserTable
  *
@@ -12,11 +13,13 @@
  * @author     Salman Raza
  */
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
+use Exception;
+
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
 
@@ -66,9 +69,9 @@ class UserTable implements UserTableInterface
     {
         try {
             return $this->userFetcher->fetchUsers();
-        } catch (\Exception $e) {
+        } catch (Exception $exp) {
             // Log the error message
-            error_log('Error fetching users: ' . $e->getMessage());
+            error_log('Error fetching users: ' . $exp->getMessage());
         }
 
         // Return empty array as fallback
@@ -78,7 +81,7 @@ class UserTable implements UserTableInterface
     /**
      * Renders a table of users using UserRendererInterface.
      *
-     * @throws \Exception If an error occurs during user rendering.
+     * @throws Exception If an error occurs during user rendering.
      */
     public function render(): void
     {
@@ -86,14 +89,14 @@ class UserTable implements UserTableInterface
             $users = $this->getUsers();
 
             if (!empty($users)) {
-                echo $this->userRenderer->render($users);
+                echo $this->userRenderer->render(compact('users'), 'table');
             } else {
                 // Display a message or fallback content when no users are available
                 echo 'No users found.';
             }
-        } catch (\Exception $e) {
+        } catch (Exception $exp) {
             // Log the error message
-            error_log('Error rendering user table: ' . $e->getMessage());
+            error_log('Error rendering user table: ' . $exp->getMessage());
         }
     }
 }

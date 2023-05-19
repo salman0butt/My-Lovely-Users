@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-// Check if $userDetails is set and initialize it to an empty array if it isn't.
-$userDetails = $userDetails ?? [];
+// Check if $user is set and initialize it to an empty array if it isn't.
+$user = $user ?? [];
 
 ?>
 
@@ -24,52 +24,52 @@ $userDetails = $userDetails ?? [];
   <tbody>
     <tr>
       <th scope="row">
-        <?php echo isset($userDetails['id']) ? esc_html($userDetails['id']) : ''; ?>
+        <?php echo isset($user['id']) ? esc_html($user['id']) : ''; ?>
       </th>
       <td>
-        <?php echo isset($userDetails['name']) ? esc_html($userDetails['name']) : ''; ?>
+        <?php echo isset($user['name']) ? esc_html($user['name']) : ''; ?>
       </td>
       <td>
-        <?php echo isset($userDetails['username']) ? esc_html($userDetails['username']) : ''; ?>
+        <?php echo isset($user['username']) ? esc_html($user['username']) : ''; ?>
       </td>
       <td>
-        <?php echo isset($userDetails['email']) ? esc_html($userDetails['email']) : ''; ?>
+        <?php echo isset($user['email']) ? esc_html($user['email']) : ''; ?>
       </td>
       <td>
-        <?php echo isset($userDetails['phone']) ? esc_html($userDetails['phone']) : ''; ?>
+        <?php echo isset($user['phone']) ? esc_html($user['phone']) : ''; ?>
       </td>
       <td>
-        <?php echo isset($userDetails['website']) ? esc_html($userDetails['website']) : ''; ?>
+        <?php echo isset($user['website']) ? esc_html($user['website']) : ''; ?>
       </td>
       <td>
-        <?php echo isset($userDetails['company']['name'])
-        ? esc_html($userDetails['company']['name'])
+        <?php echo isset($user['company']['name'])
+        ? esc_html($user['company']['name'])
         : ''; ?><br>
-        <?php echo isset($userDetails['company']['catchPhrase'])
-        ? esc_html($userDetails['company']['catchPhrase'])
+        <?php echo isset($user['company']['catchPhrase'])
+        ? esc_html($user['company']['catchPhrase'])
         : ''; ?><br>
-        <?php echo isset($userDetails['company']['bs'])
-        ? esc_html($userDetails['company']['bs'])
+        <?php echo isset($user['company']['bs'])
+        ? esc_html($user['company']['bs'])
         : ''; ?>
       </td>
       <td>
-        <?php echo isset($userDetails['address']['street'])
-        ? esc_html($userDetails['address']['street'])
+        <?php echo isset($user['address']['street'])
+        ? esc_html($user['address']['street'])
         : ''; ?><br>
-        <?php echo isset($userDetails['address']['suite'])
-        ? esc_html($userDetails['address']['suite'])
+        <?php echo isset($user['address']['suite'])
+        ? esc_html($user['address']['suite'])
         : ''; ?><br>
-        <?php echo isset($userDetails['address']['city']) ?
-        esc_html($userDetails['address']['city'])
+        <?php echo isset($user['address']['city']) ?
+        esc_html($user['address']['city'])
         : ''; ?><br>
-        <?php echo isset($userDetails['address']['zipcode'])
-        ? esc_html($userDetails['address']['zipcode'])
+        <?php echo isset($user['address']['zipcode'])
+        ? esc_html($user['address']['zipcode'])
         : ''; ?><br>
-        <?php echo isset($userDetails['address']['geo']['lat'])
-        ? esc_html($userDetails['address']['geo']['lat'])
+        <?php echo isset($user['address']['geo']['lat'])
+        ? esc_html($user['address']['geo']['lat'])
         : ''; ?><br>
-        <?php echo isset($userDetails['address']['geo']['lat'])
-        ? esc_html($userDetails['address']['geo']['lng'])
+        <?php echo isset($user['address']['geo']['lat'])
+        ? esc_html($user['address']['geo']['lng'])
         : ''; ?><br>
       </td>
     </tr>

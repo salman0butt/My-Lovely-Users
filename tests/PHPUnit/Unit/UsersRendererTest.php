@@ -45,7 +45,7 @@ class UsersRendererTest  extends AbstractTestCase
 
 
         // Call the render method and capture the output
-        $output = $this->renderer->render($users);
+        $output = $this->renderer->render(compact('users'), 'table');
 
         // Assert that the output contains the expected HTML
         $this->assertStringContainsString('1', $output);
@@ -56,5 +56,25 @@ class UsersRendererTest  extends AbstractTestCase
         $this->assertStringContainsString('Jane Doe 2', $output);
         $this->assertStringContainsString('janedoe2', $output);
         $this->assertStringContainsString('janedoe2@example.com', $output);
+    }
+
+    public function testSingleUserRender(): void
+    {
+        // Create a mock user data
+        $user = [
+            'id' => 1,
+            'name' => 'John Doe',
+            'username' => 'johndoe',
+            'email' => 'johndoe@example.com'
+        ];
+
+        // Call the render method and capture the output
+        $output = $this->renderer->render(compact('user'), 'details');
+
+        // Assert that the output contains the expected HTML
+        $this->assertStringContainsString('1', $output);
+        $this->assertStringContainsString('John Doe', $output);
+        $this->assertStringContainsString('johndoe', $output);
+        $this->assertStringContainsString('johndoe@example.com', $output);
     }
 }

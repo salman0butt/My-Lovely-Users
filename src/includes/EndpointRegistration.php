@@ -9,7 +9,8 @@
  * @subpackage MyLovelyUsers\includes
  * @author     Salman Raza
  */
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 

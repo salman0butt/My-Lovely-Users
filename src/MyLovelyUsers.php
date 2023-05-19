@@ -9,7 +9,7 @@
  * @author     Salman Raza <salman0butt@gmail.com>
  */
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers;
 
@@ -85,6 +85,7 @@ class MyLovelyUsers
         UserTableInterface $usersTable,
         UserDetailsInterface $userDetails
     ) {
+
         $this->endpointRegistration = $endpointRegistration;
         $this->setting = $setting;
         $this->usersTable = $usersTable;
@@ -112,6 +113,7 @@ class MyLovelyUsers
         UserTableInterface $usersTable,
         UserDetailsInterface $userDetails
     ): MyLovelyUsers {
+
         if (self::$instance === null) {
             self::$instance = new self(
                 $endpointRegistration,

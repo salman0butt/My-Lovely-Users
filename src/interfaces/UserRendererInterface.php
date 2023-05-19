@@ -15,7 +15,8 @@ interface UserRendererInterface
      * Renders an array of user data as an HTML string.
      *
      * @param array $users An array of user data to render.
+     * @param string $type An string of type.
      * @return string The rendered HTML string.
      */
-    public function render(array $users): string;
+    public function render(array $users, string $type): string;
 }

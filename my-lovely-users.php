@@ -10,7 +10,6 @@ use Inpsyde\MyLovelyUsers\Includes\UserTable;
 use Inpsyde\MyLovelyUsers\Includes\UserDetails;
 use Inpsyde\MyLovelyUsers\Includes\UserFetcher;
 use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
-use Inpsyde\MyLovelyUsers\Includes\UserDetailRenderer;
 use Inpsyde\MyLovelyUsers\Includes\EndpointRegistration;
 use Inpsyde\MyLovelyUsers\Includes\MyLovelyUsersActivator;
 use Inpsyde\MyLovelyUsers\Includes\MyLovelyUsersDeactivator;
@@ -65,10 +64,9 @@ function my_lovely_users_init()
     $userFetcher = new UserFetcher($wpCache, $httpClient); // Fetches user data
 
     $userRenderer = new UsersRenderer(); // Renders user data for display
-    $userDetailRenderer = new UserDetailRenderer(); // Renders individual user details
 
     $usersTable = new UserTable($userFetcher, $userRenderer); // Handles fetching and rendering a table of users
-    $userDetails = new UserDetails($userFetcher, $userDetailRenderer); // Handles fetching and rendering user details
+    $userDetails = new UserDetails($userFetcher, $userRenderer); // Handles fetching and rendering user details
     $endpointRegistration = new EndpointRegistration();
     $setting = new Setting();
 
