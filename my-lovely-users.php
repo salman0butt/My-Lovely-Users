@@ -72,12 +72,13 @@ function my_lovely_users_init()
 
     // Create an instance of the MyLovelyUsers plugin and pass the dependencies
     if (class_exists(MyLovelyUsers::class)) {
-        MyLovelyUsers::getInstance(
+        $myLovelyUsers = new MyLovelyUsers(
             $endpointRegistration,
             $setting,
             $usersTable,
             $userDetails
         );
+        $myLovelyUsers->init();
     }
 }
 

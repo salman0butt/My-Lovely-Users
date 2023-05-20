@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Inpsyde\MyLovelyUsers\Test;
+namespace Inpsyde\MyLovelyUsers\Test\Unit;
 
 use Brain\Monkey;
 use PHPUnit\Framework\TestCase;

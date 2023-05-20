@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 
-use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 use Exception;
+use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 
@@ -103,7 +103,7 @@ class UserFetcher implements UserFetcherInterface
             } catch (Exception $exception) {
                 // Handle errors that occur while fetching user data from the API.
                 error_log("Error: " . $exception->getMessage());
-                throw $exception;
+                throw new Exception("Error fetching user data from the API.");
             }
         }
         // Return the fetched user data.
@@ -130,7 +130,7 @@ class UserFetcher implements UserFetcherInterface
             } catch (Exception $exception) {
                 // Handle errors that occur while fetching user data from the API.
                 error_log("Error: " . $exception->getMessage());
-                throw $exception;
+                throw new Exception("Error fetching user data from the API.");
             }
         }
 

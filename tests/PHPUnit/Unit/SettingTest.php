@@ -2,13 +2,11 @@
 
 declare (strict_types = 1);
 
-namespace Inpsyde\MyLovelyUsers\Test;
+namespace Inpsyde\MyLovelyUsers\Test\Unit;
 
 use Brain\Monkey;
 use Inpsyde\MyLovelyUsers\Includes\Setting;
-use Inpsyde\MyLovelyUsers\Test\AbstractTestCase;
-use Inpsyde\MyLovelyUsers\Includes\EndpointRegistration;
-
+use Inpsyde\MyLovelyUsers\Test\Unit\AbstractTestCase;
 class SettingTest extends AbstractTestCase
 {
 

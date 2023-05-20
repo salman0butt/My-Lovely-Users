@@ -9,7 +9,7 @@
  * @author     Salman Raza <salman0butt@gmail.com>
  */
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Inpsyde\MyLovelyUsers;
 
@@ -35,13 +35,6 @@ class MyLovelyUsers
      * @var string
      */
     private string $version;
-
-    /**
-     * The single instance of the MyLovelyUsers class.
-     *
-     * @var MyLovelyUsers|null
-     */
-    private static ?MyLovelyUsers $instance = null;
 
     /**
      * The instance of EndpointRegistrationInterface to register endpoints.
@@ -93,37 +86,6 @@ class MyLovelyUsers
 
         $this->version = defined('MY_LOVELY_USERS_VERSION') ? MY_LOVELY_USERS_VERSION : '1.0.0';
         $this->pluginName = defined('MY_LOVELY_USERS_NAME') ? MY_LOVELY_USERS_NAME : 'my-lovely-users-table-plugin';
-
-        $this->registerHooks();
-    }
-
-        /**
-     * Retrieves the single instance of the MyLovelyUsers class.
-     *
-     * @param EndpointRegistrationInterface $endpointRegistration An instance of EndpointRegistrationInterface to register the plugin's endpoint.
-     * @param SettingInterface             $setting               An instance of SettingInterface to manage the plugin's settings.
-     * @param UserTableInterface           $usersTable            An instance of UserTableInterface to render the plugin's user table.
-     * @param UserDetailsInterface         $userDetails           An instance of UserDetailsInterface to render a single user's details.
-     *
-     * @return MyLovelyUsers The single instance of the MyLovelyUsers class.
-     */
-    public static function getInstance(
-        EndpointRegistrationInterface $endpointRegistration,
-        SettingInterface $setting,
-        UserTableInterface $usersTable,
-        UserDetailsInterface $userDetails
-    ): MyLovelyUsers {
-
-        if (self::$instance === null) {
-            self::$instance = new self(
-                $endpointRegistration,
-                $setting,
-                $usersTable,
-                $userDetails
-            );
-        }
-
-        return self::$instance;
     }
 
     /**
@@ -131,7 +93,7 @@ class MyLovelyUsers
      *
      * @since 1.0.0
      */
-    private function registerHooks(): void
+    public function init(): void
     {
         try {
             // Register the scripts and styles
@@ -148,9 +110,10 @@ class MyLovelyUsers
 
             // Register the user details
             $this->userDetails->register();
-        } catch (Exception $e) {
-            // Handle exceptions here
-            error_log("Error: " . $e->getMessage());
+        } catch (Exception $exp) {
+            // Log the error message with additional details
+            error_log("Error initializing the plugin: " . $exp->getMessage());
+            wp_die('An error occurred: ' . $exp->getMessage());
         }
     }
 
@@ -166,33 +129,5 @@ class MyLovelyUsers
     {
         AssetLoader::enqueueStyles($this->pluginName, $this->version);
         AssetLoader::enqueueScripts($this->pluginName, $this->version);
-    }
-
-    /**
-     * Retrieves the plugin name.
-     *
-     * Returns the name of the plugin.
-     *
-     * @since 1.0.0
-     *
-     * @return string The plugin name.
-     */
-    public function getPluginName(): string
-    {
-        return $this->pluginName;
-    }
-
-    /**
-     * Retrieves the plugin version.
-     *
-     * Returns the version of the plugin.
-     *
-     * @since 1.0.0
-     *
-     * @return string The plugin version.
-     */
-    public function getVersion(): string
-    {
-        return $this->version;
     }
 }

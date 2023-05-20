@@ -2,10 +2,10 @@
 
 declare (strict_types = 1);
 
-namespace Inpsyde\MyLovelyUsers\Test;
+namespace Inpsyde\MyLovelyUsers\Test\Unit;
 
 use Inpsyde\MyLovelyUsers\Includes\UserFetcher;
-use Inpsyde\MyLovelyUsers\Test\AbstractTestCase;
+use Inpsyde\MyLovelyUsers\Test\Unit\AbstractTestCase;
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
 
