@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Includes\AssetLoader;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableShortcodeInterface;
-use Inpsyde\MyLovelyUsers\AssetLoader;
 use Inpsyde\MyLovelyUsers\Interfaces\EndpointRegistrationInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\SettingInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserDetailsInterface;

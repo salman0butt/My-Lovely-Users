@@ -48,10 +48,10 @@ class UserTableShortcode implements UserTableShortcodeInterface
     /**
      * Renders the user table.
      *
-     * @param array $atts Shortcode attributes.
+     * @param string $atts Shortcode attributes.
      * @return string Rendered user table HTML.
      */
-    public function renderUserTable(array $atts): string
+    public function renderUserTable(string $atts): string
     {
         // Render the user table
         ob_start();

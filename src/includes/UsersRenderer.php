@@ -31,7 +31,7 @@ class UsersRenderer implements UserRendererInterface
     public function render(array $data, string $type): string
     {
         $templatePath = $this->getTemplatePath($type);
-
+        
         if (!file_exists($templatePath)) {
             throw new RuntimeException('Template file not found.');
         }
@@ -49,7 +49,7 @@ class UsersRenderer implements UserRendererInterface
      */
     private function getTemplatePath(string $type): string
     {
-        $templateDirectory = plugin_dir_path(__FILE__) . '/templates/';
+        $templateDirectory = plugin_dir_path(__FILE__) . '/../templates/';
 
         switch ($type) {
             case 'table':

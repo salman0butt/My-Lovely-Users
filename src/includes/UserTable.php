@@ -87,6 +87,7 @@ class UserTable implements UserTableInterface
             $users = $this->getUsers();
 
             if (!empty($users)) {
+                // show users table
                 echo $this->userRenderer->render(compact('users'), 'table');
             } else {
                 // When no users found

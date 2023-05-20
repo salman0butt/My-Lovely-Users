@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace Inpsyde\MyLovelyUsers;
+namespace Inpsyde\MyLovelyUsers\Includes;
 
 class AssetLoader
 {
@@ -28,7 +28,7 @@ class AssetLoader
     {
         wp_enqueue_style(
             $pluginName,
-            plugin_dir_url(__FILE__) . 'assets/css/my-lovely-users.css',
+            plugin_dir_url(__FILE__) . '/../../assets/css/my-lovely-users.css',
             [],
             $version,
             'all'
@@ -45,7 +45,7 @@ class AssetLoader
     {
         wp_enqueue_script(
             $pluginName,
-            plugin_dir_url(__FILE__) . 'assets/js/my-lovely-users.js',
+            plugin_dir_url(__FILE__) . '/../../assets/js/my-lovely-users.js',
             ['jquery'],
             $version,
             true
