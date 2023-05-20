@@ -25,5 +25,5 @@ interface CacheInterface
      * @param mixed $value The value to cache.
      * @param int $expiration The time, in seconds, until the cache should expire.
      */
-    public function set(string $key, mixed $value, int $expiration): mixed;
+    public function set(string $key, mixed $value, int $expiration): void;
 }

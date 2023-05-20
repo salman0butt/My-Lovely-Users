@@ -8,12 +8,7 @@
             "Inpsyde\\MyLovelyUsers\\Interfaces\\": "src/interfaces/",
             "Inpsyde\\MyLovelyUsers\\Includes\\": "src/includes/",
             "Inpsyde\\MyLovelyUsers\\Lib\\": "src/lib/",
-            "Inpsyde\\MyLovelyUsers\\Test\\": "tests/PHPUnit/Unit"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Inpsyde\\MyLovelyUsers\\Tests\\Unit\\": "tests/PHPUnit/Unit/"
+            "Inpsyde\\MyLovelyUsers\\Test\\Unit\\": "tests/PHPUnit/Unit"
         }
     },
     "require": {

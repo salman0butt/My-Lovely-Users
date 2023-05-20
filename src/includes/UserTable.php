@@ -19,7 +19,6 @@ namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 use Exception;
-
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
 

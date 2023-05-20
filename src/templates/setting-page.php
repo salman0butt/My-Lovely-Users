@@ -1,3 +1,13 @@
+<?php
+
+/**
+ * Template file for Settings page
+ *
+ */
+
+declare(strict_types=1);
+
+?>
 <div class="wrap">
     <h1>My Lovely Users Settings</h1>
     <form method="post" action="options.php">

@@ -21,7 +21,7 @@ class EndpointRegistrationTest extends AbstractTestCase
         Monkey\Functions\when('get_option')
             ->justReturn(false);
 
-        Monkey\Functions\when('sanitize_text')
+        Monkey\Functions\when('sanitize_text_field')
             ->justReturn('my-lovely-users-table');
 
         // Expect the add_rewrite_rule function to be called.

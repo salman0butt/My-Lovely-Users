@@ -9,13 +9,12 @@
  * @author     Salman Raza <salman0butt@gmail.com>
  */
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers;
 
 use Exception;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableShortcodeInterface;
-
 use Inpsyde\MyLovelyUsers\AssetLoader;
 use Inpsyde\MyLovelyUsers\Interfaces\EndpointRegistrationInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\SettingInterface;

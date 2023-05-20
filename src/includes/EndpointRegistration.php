@@ -45,7 +45,7 @@ class EndpointRegistration implements EndpointRegistrationInterface
         }
 
         // Sanitize the endpoint value to ensure it contains only valid characters.
-        $endpoint = sanitize_text($endpoint);
+        $endpoint = sanitize_text_field($endpoint);
 
         // Register the custom endpoint with WordPress using the add_rewrite_rule() function.
         add_rewrite_rule($endpoint, 'index.php?my_lovely_users_table=1', 'top');

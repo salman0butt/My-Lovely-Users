@@ -17,7 +17,6 @@ namespace Inpsyde\MyLovelyUsers\Includes;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableShortcodeInterface;
 
-
 class UserTableShortcode implements UserTableShortcodeInterface
 {
     /**
@@ -45,7 +44,6 @@ class UserTableShortcode implements UserTableShortcodeInterface
         // Register the shortcode
         add_shortcode('my_lovely_user_table', [$this, 'renderUserTable']);
     }
-
 
     /**
      * Renders the user table.
