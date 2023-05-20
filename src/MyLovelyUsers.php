@@ -14,6 +14,8 @@ declare (strict_types = 1);
 namespace Inpsyde\MyLovelyUsers;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Interfaces\UserTableShortcodeInterface;
+
 use Inpsyde\MyLovelyUsers\AssetLoader;
 use Inpsyde\MyLovelyUsers\Interfaces\EndpointRegistrationInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\SettingInterface;
@@ -65,6 +67,13 @@ class MyLovelyUsers
     private UserDetailsInterface $userDetails;
 
     /**
+     * The instance of UserTableShortcodeInterface to render a single user's details.
+     *
+     * @var UserTableShortcodeInterface
+     */
+    private UserTableShortcodeInterface $userTableShortcode;
+
+    /**
      * Initializes a new instance of the MyLovelyUsers class.
      *
      * @param EndpointRegistrationInterface $endpointRegistration An instance of EndpointRegistrationInterface to register the plugin's endpoint.
@@ -76,13 +85,15 @@ class MyLovelyUsers
         EndpointRegistrationInterface $endpointRegistration,
         SettingInterface $setting,
         UserTableInterface $usersTable,
-        UserDetailsInterface $userDetails
+        UserDetailsInterface $userDetails,
+        UserTableShortcodeInterface $userTableShortcode
     ) {
 
         $this->endpointRegistration = $endpointRegistration;
         $this->setting = $setting;
         $this->usersTable = $usersTable;
         $this->userDetails = $userDetails;
+        $this->userTableShortcode = $userTableShortcode;
 
         $this->version = defined('MY_LOVELY_USERS_VERSION') ? MY_LOVELY_USERS_VERSION : '1.0.0';
         $this->pluginName = defined('MY_LOVELY_USERS_NAME') ? MY_LOVELY_USERS_NAME : 'my-lovely-users-table-plugin';
@@ -110,6 +121,9 @@ class MyLovelyUsers
 
             // Register the user details
             $this->userDetails->register();
+
+            // Register the shortcode
+            $this->userTableShortcode->register();
         } catch (Exception $exp) {
             // Log the error message with additional details
             error_log("An error occurred: " . $exp->getMessage());

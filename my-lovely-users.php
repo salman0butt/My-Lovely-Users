@@ -10,6 +10,7 @@ use Inpsyde\MyLovelyUsers\Includes\UserTable;
 use Inpsyde\MyLovelyUsers\Includes\UserDetails;
 use Inpsyde\MyLovelyUsers\Includes\UserFetcher;
 use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
+use Inpsyde\MyLovelyUsers\Includes\UserTableShortcode;
 use Inpsyde\MyLovelyUsers\Includes\EndpointRegistration;
 use Inpsyde\MyLovelyUsers\Includes\MyLovelyUsersActivator;
 use Inpsyde\MyLovelyUsers\Includes\MyLovelyUsersDeactivator;
@@ -69,6 +70,7 @@ function my_lovely_users_init()
     $userDetails = new UserDetails($userFetcher, $userRenderer); // Handles fetching and rendering user details
     $endpointRegistration = new EndpointRegistration();
     $setting = new Setting();
+    $serTableShortcode = new UserTableShortcode($usersTable);
 
     // Create an instance of the MyLovelyUsers plugin and pass the dependencies
     if (class_exists(MyLovelyUsers::class)) {
@@ -76,7 +78,8 @@ function my_lovely_users_init()
             $endpointRegistration,
             $setting,
             $usersTable,
-            $userDetails
+            $userDetails,
+            $serTableShortcode
         );
         $myLovelyUsers->init();
     }
