@@ -8,6 +8,13 @@ $user = $user ?? [];
 ?>
 
 <h3 class="text-center mb-4"><?php echo esc_html__('User Detail', 'my-lovely-users'); ?></h3>
+
+<?php
+// Add a custom hook before the table starts
+do_action('my_lovely_users_table_detail_before');
+
+?>
+
 <table id="users-details" class="table table-bordered">
   <thead>
     <tr>
@@ -75,3 +82,9 @@ $user = $user ?? [];
     </tr>
   </tbody>
 </table>
+
+<?php
+// Add a custom hook after the table ends
+do_action('my_lovely_users_table_detail_after');
+
+?>

@@ -11,6 +11,9 @@ $users = $users ?? [];
 ?>
 
 <h3 style="text-align:center; margin-bottom: 10px !important;"><?php echo esc_html__('My Lovely Users Table', 'my-lovely-users'); ?></h3>
+
+<?php do_action('my_lovely_users_before_table'); ?>
+
 <div class="table-container">
 <table id="users-table">
   <thead>
@@ -72,6 +75,9 @@ $users = $users ?? [];
   </tbody>
 </table>
 </div>
+
+<?php do_action('my_lovely_users_after_table'); ?>
+
 <div id="user-details-container">
   <!-- User details will be displayed here via AJAX -->
 </div>
