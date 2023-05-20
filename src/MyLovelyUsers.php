@@ -112,7 +112,7 @@ class MyLovelyUsers
             $this->userDetails->register();
         } catch (Exception $exp) {
             // Log the error message with additional details
-            error_log("Error initializing the plugin: " . $exp->getMessage());
+            error_log("An error occurred: " . $exp->getMessage());
             wp_die('An error occurred: ' . $exp->getMessage());
         }
     }

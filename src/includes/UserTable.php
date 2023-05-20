@@ -74,7 +74,6 @@ class UserTable implements UserTableInterface
             error_log('Error fetching users: ' . $exp->getMessage());
         }
 
-        // Return empty array as fallback
         return [];
     }
 
@@ -91,8 +90,8 @@ class UserTable implements UserTableInterface
             if (!empty($users)) {
                 echo $this->userRenderer->render(compact('users'), 'table');
             } else {
-                // Display a message or fallback content when no users are available
-                echo 'No users found.';
+                // When no users found
+                throw new Exception('No users found.');
             }
         } catch (Exception $exp) {
             // Log the error message
