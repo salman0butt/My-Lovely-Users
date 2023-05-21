@@ -13,12 +13,12 @@
  * @author     Salman Raza
  */
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 
-use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 use Exception;
+use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
 
@@ -83,16 +83,41 @@ class UserTable implements UserTableInterface
      */
     public function render(): void
     {
+
+        $renderTable = get_query_var('my_lovely_users_table');
+        if ($renderTable) {
+            $this->renderUserTable();
+        }
+    }
+
+    /**
+     * Renders the user table.
+     *
+     * @param bool $isShortcode
+     * @throws Exception If an error occurs during user rendering.
+     */
+    public function renderUserTable(bool $isShortcode = false): void
+    {
         try {
             $users = $this->getUsers();
 
             if (!empty($users)) {
                 // show users table
-                echo $this->userRenderer->render(compact('users'), 'table');
+                if($isShortcode) {
+                    echo $this->userRenderer->render(compact('users'), 'table');
+                } else {
+                    // Modify the rendering to output the table within the body for the custom route
+                    add_filter('the_content', function ($content) use ($users) {
+                        echo $this->userRenderer->render(compact('users'), 'table');
+                        return '';
+                    });
+                }
+
             } else {
                 // When no users found
                 throw new Exception('No users found.');
             }
+
         } catch (Exception $exp) {
             // Log the error message
             error_log('Error rendering user table: ' . $exp->getMessage());

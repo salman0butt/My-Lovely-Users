@@ -54,3 +54,8 @@
 #user-details-container {
     text-align: center;
 }
+
+.table-container, #user-details-container {
+    width: 100% !important;
+    max-width: 100% !important;
+}

@@ -33,4 +33,10 @@ interface UserTableInterface
      * Renders a table of users using UserRendererInterface.
      */
     public function render(): void;
+
+    /**
+     * Renders a table of users using UserRendererInterface.
+     * @param bool $isShortcode
+     */
+    public function renderUserTable(bool $isShortcode = false): void;
 }

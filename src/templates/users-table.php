@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-if (function_exists('get_header')) {
-    get_header();
-}
-
 $users = $users ?? [];
 
 ?>
@@ -81,10 +77,3 @@ $users = $users ?? [];
 <div id="user-details-container">
   <!-- User details will be displayed here via AJAX -->
 </div>
-<?php
-// Check if footer.php file exists in the theme
-if (function_exists('get_footer')) {
-    get_footer();
-}
-
-?>
