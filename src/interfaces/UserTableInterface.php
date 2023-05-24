@@ -27,7 +27,7 @@ interface UserTableInterface
      *
      * @return array The fetched users.
      */
-    public function getUsers(): array;
+    public function fetchUsers(): array;
 
     /**
      * Renders a table of users using UserRendererInterface.
@@ -38,5 +38,5 @@ interface UserTableInterface
      * Renders a table of users using UserRendererInterface.
      * @param bool $isShortcode
      */
-    public function renderUserTable(bool $isShortcode = false): void;
+    public function showUserTable(bool $isShortcode = false): void;
 }

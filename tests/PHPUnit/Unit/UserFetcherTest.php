@@ -5,14 +5,16 @@ declare (strict_types = 1);
 namespace Inpsyde\MyLovelyUsers\Test\Unit;
 
 use Inpsyde\MyLovelyUsers\Includes\UserFetcher;
-use Inpsyde\MyLovelyUsers\Test\Unit\AbstractTestCase;
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
+use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
+use Inpsyde\MyLovelyUsers\Test\Unit\AbstractTestCase;
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
 
 class UserFetcherTest extends AbstractTestCase
 {
     private CacheInterface $cacheMock;
     private HttpClientInterface $httpClientMock;
+    private LoggerInterface $loggerMock;
 
     protected function setUp(): void
     {
@@ -25,6 +27,9 @@ class UserFetcherTest extends AbstractTestCase
 
         // Create a mock HTTP client
         $this->httpClientMock = $this->createMock(HttpClientInterface::class);
+
+        // Create a mock logger
+        $this->loggerMock = $this->createMock(LoggerInterface::class);
     }
 
     public function testFetchUsers()
@@ -48,7 +53,7 @@ class UserFetcherTest extends AbstractTestCase
             ->method('get')->willReturn($users);
 
         // Create a new UserFetcher instance with the mock objects
-        $userFetcher = new UserFetcher($this->cacheMock, $this->httpClientMock);
+        $userFetcher = new UserFetcher($this->cacheMock, $this->httpClientMock, $this->loggerMock);
 
         // Assert that the fetched user data matches the expected data
         $this->assertEquals($users, $userFetcher->fetchUsers());
@@ -84,7 +89,7 @@ class UserFetcherTest extends AbstractTestCase
             ->method('get')->willReturn($user);
 
         // Create a new UserFetcher instance with the mock objects
-        $userFetcher = new UserFetcher($this->cacheMock, $this->httpClientMock);
+        $userFetcher = new UserFetcher($this->cacheMock, $this->httpClientMock, $this->loggerMock);
 
         // Assert that the fetched user data matches the expected data
         $this->assertEquals($user, $userFetcher->fetchUser(1));

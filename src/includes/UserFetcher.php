@@ -18,6 +18,7 @@ namespace Inpsyde\MyLovelyUsers\Includes;
 use Exception;
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
+use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 
 class UserFetcher implements UserFetcherInterface
@@ -35,6 +36,14 @@ class UserFetcher implements UserFetcherInterface
      * @var HttpClientInterface
      */
     private HttpClientInterface $httpClient;
+
+    /**
+     * The logger to log
+     *
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
     /**
      * The amount of time in seconds for which to cache the fetched user data.
      *
@@ -67,18 +76,21 @@ class UserFetcher implements UserFetcherInterface
      *
      * @param CacheInterface $cache The cache service used to store the fetched user data.
      * @param HttpClientInterface $httpClient The HTTP client used to make requests to the API.
+     * @param LoggerInterface $logger The Logger to log.
      * @param int $cacheExpireTime The amount of time in seconds for which to cache the fetched user data.
      * @param string $apiUrl The URL of the API to fetch user data from.
      */
     public function __construct(
         CacheInterface $cache,
         HttpClientInterface $httpClient,
+        LoggerInterface $logger,
         int $cacheExpireTime = 3600,
         string $apiUrl = 'https://jsonplaceholder.typicode.com/users'
     ) {
 
         $this->httpClient = $httpClient;
         $this->cache = $cache;
+        $this->logger = $logger;
         $this->cacheExpireTime = $cacheExpireTime;
         $this->apiUrl = $apiUrl;
     }
@@ -101,16 +113,15 @@ class UserFetcher implements UserFetcherInterface
                 $users = $this->httpClient->get($this->apiUrl);
                 $this->cache->set($cacheKey, $users, $this->cacheExpireTime);
             } catch (Exception $exception) {
-                // Handle errors that occur while fetching user data from the API.
-                error_log("Error: " . $exception->getMessage());
-                throw new Exception("Error fetching user data from the API.");
+                // Log the error message with additional details
+                $this->logger->logError('An error occurred: ' . $exception->getMessage());
             }
         }
         // Return the fetched user data.
         return $users;
     }
 
-     /**
+    /**
      * Fetches the single user data from the API or from the cache if available.
      *
      * @return array The fetched user data.
@@ -128,9 +139,8 @@ class UserFetcher implements UserFetcherInterface
                 $user = $this->httpClient->get($this->apiUrl . "/" . $userId);
                 $this->cache->set($cacheKey, $user, $this->cacheExpireTime);
             } catch (Exception $exception) {
-                // Handle errors that occur while fetching user data from the API.
-                error_log("Error: " . $exception->getMessage());
-                throw new Exception("Error fetching user data from the API.");
+                // Log the error message with additional details
+                $this->logger->logError('An error occurred: ' . $exception->getMessage());
             }
         }
 

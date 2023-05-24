@@ -16,7 +16,6 @@ namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
 use Exception;
-
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableShortcodeInterface;
 
 class UserTableShortcode implements UserTableShortcodeInterface
@@ -57,7 +56,7 @@ class UserTableShortcode implements UserTableShortcodeInterface
     {
         // Render the user table
         ob_start();
-        $this->userTable->renderUserTable(true);
+        $this->userTable->showUserTable(true);
         return ob_get_clean();
     }
 }

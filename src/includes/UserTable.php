@@ -13,11 +13,12 @@
  * @author     Salman Raza
  */
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableInterface;
@@ -39,15 +40,28 @@ class UserTable implements UserTableInterface
     private UserRendererInterface $userRenderer;
 
     /**
+     * The logger to log
+     *
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
      * Constructor.
      *
      * @param UserFetcherInterface $userFetcher   UserFetcherInterface instance to fetch users.
      * @param UserRendererInterface $userRenderer UserRendererInterface instance to render users.
+     * @param LoggerInterface $logger LoggerInterface instance to log.
      */
-    public function __construct(UserFetcherInterface $userFetcher, UserRendererInterface $userRenderer)
-    {
+    public function __construct(
+        UserFetcherInterface $userFetcher,
+        UserRendererInterface $userRenderer,
+        LoggerInterface $logger
+    ) {
+
         $this->userFetcher = $userFetcher;
         $this->userRenderer = $userRenderer;
+        $this->logger = $logger;
     }
 
     /**
@@ -64,13 +78,13 @@ class UserTable implements UserTableInterface
      * @return array The fetched users.
      * @throws \Exception If an error occurs during user fetching.
      */
-    public function getUsers(): array
+    public function fetchUsers(): array
     {
         try {
             return $this->userFetcher->fetchUsers();
-        } catch (Exception $exp) {
+        } catch (Exception $exception) {
             // Log the error message
-            error_log('Error fetching users: ' . $exp->getMessage());
+            $this->logger->logError('An error occurred: ' . $exception->getMessage());
         }
 
         return [];
@@ -86,7 +100,7 @@ class UserTable implements UserTableInterface
 
         $renderTable = get_query_var('my_lovely_users_table');
         if ($renderTable) {
-            $this->renderUserTable();
+            $this->showUserTable();
         }
     }
 
@@ -96,31 +110,31 @@ class UserTable implements UserTableInterface
      * @param bool $isShortcode
      * @throws Exception If an error occurs during user rendering.
      */
-    public function renderUserTable(bool $isShortcode = false): void
+    public function showUserTable(bool $isShortcode = false): void
     {
         try {
-            $users = $this->getUsers();
+            $users = $this->fetchUsers();
 
             if (!empty($users)) {
+                // rendered users data
+                $usersData = $this->userRenderer->renderUsersTable($users);
                 // show users table
-                if($isShortcode) {
-                    echo $this->userRenderer->render(compact('users'), 'table');
+                if ($isShortcode) {
+                    echo $usersData;
                 } else {
                     // Modify the rendering to output the table within the body for the custom route
-                    add_filter('the_content', function ($content) use ($users) {
-                        echo $this->userRenderer->render(compact('users'), 'table');
+                    add_filter('the_content', static function ($content) use ($usersData) {
+                        echo $usersData;
                         return '';
                     });
                 }
-
             } else {
                 // When no users found
                 throw new Exception('No users found.');
             }
-
-        } catch (Exception $exp) {
+        } catch (Exception $exception) {
             // Log the error message
-            error_log('Error rendering user table: ' . $exp->getMessage());
+            $this->logger->logError('An error occurred: ' . $exception->getMessage());
         }
     }
 }

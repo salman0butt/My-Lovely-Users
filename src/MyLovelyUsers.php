@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Includes\AssetLoader;
 use Inpsyde\MyLovelyUsers\Interfaces\UserTableShortcodeInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\EndpointRegistrationInterface;
@@ -36,6 +37,13 @@ class MyLovelyUsers
      * @var string
      */
     private string $version;
+
+    /**
+     * The logger to log
+     *
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
 
     /**
      * The instance of EndpointRegistrationInterface to register endpoints.
@@ -76,16 +84,18 @@ class MyLovelyUsers
      * Initializes a new instance of the MyLovelyUsers class.
      *
      * @param EndpointRegistrationInterface $endpointRegistration An instance of EndpointRegistrationInterface to register the plugin's endpoint.
-     * @param SettingInterface             $setting               An instance of SettingInterface to manage the plugin's settings.
-     * @param UserTableInterface           $usersTable            An instance of UserTableInterface to render the plugin's user table.
-     * @param UserDetailsInterface         $userDetails           An instance of UserDetailsInterface to render a single user's details.
+     * @param SettingInterface  $setting An instance of SettingInterface to manage the plugin's settings.
+     * @param UserTableInterface $usersTable An instance of UserTableInterface to render the plugin's user table.
+     * @param UserDetailsInterface $userDetails An instance of UserDetailsInterface to render a single user's details.
+     * @param LoggerInterface $log An instance of LoggerInterface to log.
      */
     public function __construct(
         EndpointRegistrationInterface $endpointRegistration,
         SettingInterface $setting,
         UserTableInterface $usersTable,
         UserDetailsInterface $userDetails,
-        UserTableShortcodeInterface $userTableShortcode
+        UserTableShortcodeInterface $userTableShortcode,
+        LoggerInterface $logger
     ) {
 
         $this->endpointRegistration = $endpointRegistration;
@@ -93,6 +103,7 @@ class MyLovelyUsers
         $this->usersTable = $usersTable;
         $this->userDetails = $userDetails;
         $this->userTableShortcode = $userTableShortcode;
+        $this->logger = $logger;
 
         $this->version = defined('MY_LOVELY_USERS_VERSION') ? MY_LOVELY_USERS_VERSION : '1.0.0';
         $this->pluginName = defined('MY_LOVELY_USERS_NAME') ? MY_LOVELY_USERS_NAME : 'my-lovely-users-table-plugin';
@@ -125,8 +136,7 @@ class MyLovelyUsers
             $this->userTableShortcode->register();
         } catch (Exception $exp) {
             // Log the error message with additional details
-            error_log("An error occurred: " . $exp->getMessage());
-            wp_die('An error occurred: ' . $exp->getMessage());
+            $this->logger->logError('An error occurred: ' . $exp->getMessage());
         }
     }
 

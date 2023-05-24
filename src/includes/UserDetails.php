@@ -95,7 +95,7 @@ class UserDetails implements UserDetailsInterface
             // Fetch user details using the UserFetcher instance.
             $user = $this->userFetcher->fetchUser($userId);
             // Render user details using the UserRenderer instance.
-            $output = $this->userRenderer->render(compact('user'), 'details');
+            $output = $this->userRenderer->renderUserDetail($user);
 
             wp_send_json_success($output);
         } catch (Exception $exp) {

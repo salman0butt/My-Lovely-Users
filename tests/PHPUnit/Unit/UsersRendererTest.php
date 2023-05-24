@@ -45,7 +45,7 @@ class UsersRendererTest  extends AbstractTestCase
 
 
         // Call the render method and capture the output
-        $output = $this->renderer->render(compact('users'), 'table');
+        $output = $this->renderer->renderUsersTable($users);
 
         // Assert that the output contains the expected HTML
         $this->assertStringContainsString('1', $output);
@@ -69,7 +69,7 @@ class UsersRendererTest  extends AbstractTestCase
         ];
 
         // Call the render method and capture the output
-        $output = $this->renderer->render(compact('user'), 'details');
+        $output = $this->renderer->renderUserDetail($user);
 
         // Assert that the output contains the expected HTML
         $this->assertStringContainsString('1', $output);

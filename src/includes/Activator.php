@@ -18,7 +18,7 @@ namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Exception;
 
-class MyLovelyUsersActivator
+class Activator
 {
     /**
      * Activate the plugin.
@@ -37,9 +37,9 @@ class MyLovelyUsersActivator
             }
             // Flush rewrite rules on activation
             self::flushRewriteRules();
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             // Handle the error or exception here
-            error_log('Error: ' . $e->getMessage());
+            error_log('Error: ' . $exception->getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ class MyLovelyUsersActivator
     private static function addEndpointOption(): void
     {
         $optionName = 'my_lovely_users_endpoint';
-        $endpointValue = self::getEndpointValue();
+        $endpointValue = self::endpointValue();
 
         // Add the option with the sanitized endpoint value
         add_option($optionName, sanitize_text_field($endpointValue));
@@ -63,7 +63,7 @@ class MyLovelyUsersActivator
      * @return string
      * @since 1.0.0
      */
-    private static function getEndpointValue(): string
+    private static function endpointValue(): string
     {
         // You can define or retrieve the value of MY_LOVELY_USERS_ENDPOINT here
         return MY_LOVELY_USERS_ENDPOINT;

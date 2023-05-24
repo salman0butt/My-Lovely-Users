@@ -21,7 +21,7 @@ interface SettingInterface
     *
     * @return void
     */
-    public function SettingsPage(): void;
+    public function settingsPage(): void;
 
     /**
     * Display the settings page.

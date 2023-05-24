@@ -6,14 +6,15 @@ use Inpsyde\MyLovelyUsers\Lib\WpCache;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
 use Inpsyde\MyLovelyUsers\Lib\HttpClient;
 use Inpsyde\MyLovelyUsers\Includes\Setting;
+use Inpsyde\MyLovelyUsers\Lib\MonologLogger;
+use Inpsyde\MyLovelyUsers\Includes\Activator;
 use Inpsyde\MyLovelyUsers\Includes\UserTable;
+use Inpsyde\MyLovelyUsers\Includes\Deactivator;
 use Inpsyde\MyLovelyUsers\Includes\UserDetails;
 use Inpsyde\MyLovelyUsers\Includes\UserFetcher;
 use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
 use Inpsyde\MyLovelyUsers\Includes\UserTableShortcode;
 use Inpsyde\MyLovelyUsers\Includes\EndpointRegistration;
-use Inpsyde\MyLovelyUsers\Includes\MyLovelyUsersActivator;
-use Inpsyde\MyLovelyUsers\Includes\MyLovelyUsersDeactivator;
 /**
  * The plugin bootstrap file
  *
@@ -53,8 +54,9 @@ define('MY_LOVELY_USERS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 require_once MY_LOVELY_USERS_PLUGIN_DIR . 'vendor/autoload.php';
 
 // Activate and deactivate hooks
-register_activation_hook( __FILE__, [MyLovelyUsersActivator::class, 'activate'] );
-register_deactivation_hook( __FILE__, [MyLovelyUsersDeactivator::class, 'deactivate'] );
+register_activation_hook( __FILE__, [Activator::class, 'activate'] );
+register_deactivation_hook( __FILE__, [Deactivator::class, 'deactivate'] );
+
 
 // Initialize the plugin
 function my_lovely_users_init()
@@ -62,15 +64,20 @@ function my_lovely_users_init()
     // Create instances of required classes and components
     $wpCache = new WpCache(); // Provides caching functionality
     $httpClient = new HttpClient(); // Performs HTTP requests
-    $userFetcher = new UserFetcher($wpCache, $httpClient); // Fetches user data
+
+    // Create an instance of the logger using the MonologLogger class
+    $logger = new MonologLogger();
+
+    $userFetcher = new UserFetcher($wpCache, $httpClient, $logger); // Fetches user data
 
     $userRenderer = new UsersRenderer(); // Renders user data for display
 
-    $usersTable = new UserTable($userFetcher, $userRenderer); // Handles fetching and rendering a table of users
+    $usersTable = new UserTable($userFetcher, $userRenderer, $logger); // Handles fetching and rendering a table of users
     $userDetails = new UserDetails($userFetcher, $userRenderer); // Handles fetching and rendering user details
     $endpointRegistration = new EndpointRegistration();
     $setting = new Setting();
     $serTableShortcode = new UserTableShortcode($usersTable);
+
 
     // Create an instance of the MyLovelyUsers plugin and pass the dependencies
     if (class_exists(MyLovelyUsers::class)) {
@@ -79,7 +86,8 @@ function my_lovely_users_init()
             $setting,
             $usersTable,
             $userDetails,
-            $serTableShortcode
+            $serTableShortcode,
+            $logger
         );
         $myLovelyUsers->init();
     }
