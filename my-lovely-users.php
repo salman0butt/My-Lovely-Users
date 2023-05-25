@@ -76,7 +76,7 @@ function my_lovely_users_init()
     $userDetails = new UserDetails($userFetcher, $userRenderer, $logger); // Handles fetching and rendering user details
     $endpointRegistration = new EndpointRegistration();
     $setting = new Setting();
-    $serTableShortcode = new UserTableShortcode($usersTable);
+    $userTableShortcode = new UserTableShortcode($usersTable);
 
 
     // Create an instance of the MyLovelyUsers plugin and pass the dependencies
@@ -86,7 +86,7 @@ function my_lovely_users_init()
             $setting,
             $usersTable,
             $userDetails,
-            $serTableShortcode,
+            $userTableShortcode,
             $logger
         );
         $myLovelyUsers->init();
