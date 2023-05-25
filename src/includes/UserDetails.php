@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserDetailsInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
@@ -36,15 +37,28 @@ class UserDetails implements UserDetailsInterface
     private UserRendererInterface $userRenderer;
 
     /**
+     * The logger to log
+     *
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
      * UserDetails constructor.
      *
-     * @param UserFetcherInterface $userFetcher
-     * @param UserRendererInterface $userRenderer
+     * @param UserFetcherInterface $userFetcher UserFetcherInterface instance to fetch users.
+     * @param UserRendererInterface $userRenderer UserRendererInterface instance to render users.
+     * @param LoggerInterface $logger LoggerInterface instance to log.
      */
-    public function __construct(UserFetcherInterface $userFetcher, UserRendererInterface $userRenderer)
-    {
+    public function __construct(
+        UserFetcherInterface $userFetcher,
+        UserRendererInterface $userRenderer,
+        LoggerInterface $logger
+    ) {
+
         $this->userFetcher = $userFetcher;
         $this->userRenderer = $userRenderer;
+        $this->logger = $logger;
     }
 
     /**
@@ -65,9 +79,9 @@ class UserDetails implements UserDetailsInterface
      *
      * @param $user
      */
-    public function render($user): void
+    public function render(array $user): void
     {
-        $this->userRenderer->render(compact('user'), 'details');
+        $this->userRenderer->renderUserDetail($user);
     }
 
     /**
@@ -77,8 +91,10 @@ class UserDetails implements UserDetailsInterface
     {
         try {
             // Sanitize the user_id and nonce.
-            $userId = intval(filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT));
-            $nonce = sanitize_key($_POST['my_plugin_nonce']);
+            $userId = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+            $nonce = isset($_POST['my_plugin_nonce']) ?
+            sanitize_key($_POST['my_plugin_nonce']) :
+            '';
 
             // Check if user ID is valid.
             if (!$userId) {
@@ -98,8 +114,9 @@ class UserDetails implements UserDetailsInterface
             $output = $this->userRenderer->renderUserDetail($user);
 
             wp_send_json_success($output);
-        } catch (Exception $exp) {
-            error_log("Error fetching user details: " . $exp->getMessage());
+        } catch (Exception $exception) {
+            // Log the error message
+            $this->logger->logError('An error occurred: ' . $exception->getMessage());
             wp_send_json_error("Something went wrong.");
         }
     }

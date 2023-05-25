@@ -3,7 +3,8 @@
 /**
  * Fired during plugin deactivation
  *
- * This file contains the Deactivator class, which defines all the code necessary to run during the plugin's deactivation.
+ * This file contains the Deactivator class, which defines all the code necessary
+ * to run during the plugin's deactivation.
  *
  * @link       https://github.com/salman0butt
  * @since      1.0.0

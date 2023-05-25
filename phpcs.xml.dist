@@ -26,7 +26,7 @@
             <property
                 name="psr4"
                 type="array"
-                value="Inpsyde\MyLovelyUsers=>src/,Inpsyde\MyLovelyUsers\Interfaces=>src/interfaces,Inpsyde\MyLovelyUsers\Lib=>src/lib"/>
+                value="Inpsyde\MyLovelyUsers=>src/,Inpsyde\MyLovelyUsers\Interfaces=>src/interfaces,Inpsyde\MyLovelyUsers\Includes=>src/includes,Inpsyde\MyLovelyUsers\Lib=>src/lib"/>
         </properties>
     </rule>
 

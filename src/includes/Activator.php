@@ -30,17 +30,12 @@ class Activator
      */
     public static function activate(): void
     {
-        try {
-            // If the option does not exist, add it
-            if (!get_option('my_lovely_users_endpoint')) {
-                self::addEndpointOption();
-            }
-            // Flush rewrite rules on activation
-            self::flushRewriteRules();
-        } catch (Exception $exception) {
-            // Handle the error or exception here
-            error_log('Error: ' . $exception->getMessage());
+        // If the option does not exist, add it
+        if (!get_option('my_lovely_users_endpoint')) {
+            self::addEndpointOption();
         }
+        // Flush rewrite rules on activation
+        self::flushRewriteRules();
     }
 
     /**

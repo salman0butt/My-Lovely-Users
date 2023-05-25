@@ -1,7 +1,8 @@
 <?php
 
 /**
- * The UserFetcher class fetches user data from a given API URL and caches the results for a specified period of time.
+ * The UserFetcher class fetches user data from a given API URL and caches
+ * the results for a specified period of time.
  *
  * @link       https://github.com/salman0butt
  * @since      1.0.0
@@ -77,7 +78,8 @@ class UserFetcher implements UserFetcherInterface
      * @param CacheInterface $cache The cache service used to store the fetched user data.
      * @param HttpClientInterface $httpClient The HTTP client used to make requests to the API.
      * @param LoggerInterface $logger The Logger to log.
-     * @param int $cacheExpireTime The amount of time in seconds for which to cache the fetched user data.
+     * @param int $cacheExpireTime The amount of time in seconds for which to
+     * cache the fetched user data.
      * @param string $apiUrl The URL of the API to fetch user data from.
      */
     public function __construct(

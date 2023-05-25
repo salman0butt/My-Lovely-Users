@@ -76,7 +76,7 @@ class UserTable implements UserTableInterface
      * Fetches an array of users using UserFetcherInterface.
      *
      * @return array The fetched users.
-     * @throws \Exception If an error occurs during user fetching.
+     * @throws Exception If an error occurs during user fetching.
      */
     public function fetchUsers(): array
     {
@@ -85,9 +85,8 @@ class UserTable implements UserTableInterface
         } catch (Exception $exception) {
             // Log the error message
             $this->logger->logError('An error occurred: ' . $exception->getMessage());
+            throw $exception;
         }
-
-        return [];
     }
 
     /**
@@ -115,26 +114,28 @@ class UserTable implements UserTableInterface
         try {
             $users = $this->fetchUsers();
 
-            if (!empty($users)) {
-                // rendered users data
-                $usersData = $this->userRenderer->renderUsersTable($users);
-                // show users table
-                if ($isShortcode) {
-                    echo $usersData;
-                } else {
-                    // Modify the rendering to output the table within the body for the custom route
-                    add_filter('the_content', static function ($content) use ($usersData) {
-                        echo $usersData;
-                        return '';
-                    });
-                }
-            } else {
-                // When no users found
+            if (empty($users)) {
                 throw new Exception('No users found.');
             }
+
+            // Rendered users data
+            $usersData = $this->userRenderer->renderUsersTable($users);
+
+           // Show users table
+            if ($isShortcode) {
+                echo esc_html($usersData);
+                return;
+            }
+
+            // Modify the rendering to output the table within the body for the custom route
+            add_filter('the_content', static function ($content) use ($usersData) {
+                echo esc_html($usersData);
+                return '';
+            });
         } catch (Exception $exception) {
             // Log the error message
             $this->logger->logError('An error occurred: ' . $exception->getMessage());
+            throw $exception;
         }
     }
 }

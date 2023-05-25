@@ -14,7 +14,7 @@ interface UserDetailsInterface
      *
      * @param mixed $user The user details.
      */
-    public function render($user): void;
+    public function render(array $user): void;
 
     /**
      * Handles AJAX request to fetch user details.

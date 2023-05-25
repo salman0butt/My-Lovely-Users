@@ -73,7 +73,7 @@ function my_lovely_users_init()
     $userRenderer = new UsersRenderer(); // Renders user data for display
 
     $usersTable = new UserTable($userFetcher, $userRenderer, $logger); // Handles fetching and rendering a table of users
-    $userDetails = new UserDetails($userFetcher, $userRenderer); // Handles fetching and rendering user details
+    $userDetails = new UserDetails($userFetcher, $userRenderer, $logger); // Handles fetching and rendering user details
     $endpointRegistration = new EndpointRegistration();
     $setting = new Setting();
     $serTableShortcode = new UserTableShortcode($usersTable);
