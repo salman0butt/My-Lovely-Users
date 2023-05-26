@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use DI\ContainerBuilder;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
 use Inpsyde\MyLovelyUsers\Includes\Activator;
 use Inpsyde\MyLovelyUsers\Includes\Deactivator;
@@ -53,18 +52,9 @@ register_deactivation_hook( __FILE__, [Deactivator::class, 'deactivate'] );
 // Initialize the plugin
 function my_lovely_users_init()
 {
-
-    // Load dependencies
-    $dependencies = require MY_LOVELY_USERS_PLUGIN_DIR . 'src/dependencies.php';
-
-    // Create the container builder
-    $containerBuilder = new ContainerBuilder();
-
-    // Configure the container with the dependencies
-    $containerBuilder->addDefinitions($dependencies);
-
-    // Build the container
-    $container = $containerBuilder->build();
+    // Load conatiner
+    $containerFactory = require MY_LOVELY_USERS_PLUGIN_DIR . 'src/container.php';
+    $container = $containerFactory();
 
     // Create an instance of the MyLovelyUsers plugin and pass the dependencies
     if (class_exists(MyLovelyUsers::class)) {
