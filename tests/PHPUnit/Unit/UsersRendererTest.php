@@ -18,7 +18,7 @@ class UsersRendererTest  extends AbstractTestCase
         parent::setUp();
 
         // Mock the plugin_dir_path() function
-        Monkey\Functions\when('plugin_dir_path')->justReturn(dirname(__DIR__).'\..\..\src');
+        Monkey\Functions\when('plugin_dir_path')->justReturn(dirname(__DIR__).'/../../src/templates/');
         Monkey\Functions\when('esc_html__')->returnArg();
         Monkey\Functions\when('esc_html')->returnArg();
 
