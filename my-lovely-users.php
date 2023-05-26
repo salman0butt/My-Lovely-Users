@@ -55,7 +55,7 @@ function my_lovely_users_init()
 {
 
     // Load dependencies
-    $dependencies = require MY_LOVELY_USERS_PLUGIN_DIR . 'src/Dependencies.php';
+    $dependencies = require MY_LOVELY_USERS_PLUGIN_DIR . 'src/dependencies.php';
 
     // Create the container builder
     $containerBuilder = new ContainerBuilder();
