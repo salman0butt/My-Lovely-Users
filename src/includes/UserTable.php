@@ -121,21 +121,39 @@ class UserTable implements UserTableInterface
             // Rendered users data
             $usersData = $this->userRenderer->renderUsersTable($users);
 
-           // Show users table
+            // Show users table
             if ($isShortcode) {
-                echo esc_html($usersData);
+                echo wp_kses_post($usersData);
                 return;
             }
 
-            // Modify the rendering to output the table within the body for the custom route
-            add_filter('the_content', static function ($content) use ($usersData) {
-                echo esc_html($usersData);
-                return '';
+            add_filter('my_lovely_users_template_data', static function () use ($usersData) {
+                return $usersData;
             });
+
+            // Render the template
+            $this->renderTemplate();
         } catch (Exception $exception) {
             // Log the error message
             $this->logger->logError('An error occurred: ' . $exception->getMessage());
             throw $exception;
+        }
+    }
+
+    private function renderTemplate(): void
+    {
+        $template = 'users-table-page.php';
+
+        // Locate the template file using WordPress template hierarchy
+        $templatePath = locate_template($template);
+
+        // If the template file doesn't exist in the theme, use the plugin's template
+        if (empty($templatePath)) {
+            $templatePath = plugin_dir_path(__FILE__) . '../templates/' . $template;
+        }
+
+        if (!empty($templatePath)) {
+            include $templatePath;
         }
     }
 }

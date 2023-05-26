@@ -49,7 +49,7 @@ class Setting implements SettingInterface
      */
     public function displayPage(): void
     {
-        include_once plugin_dir_path(__FILE__) . '/../templates/setting-page.php';
+        include_once MY_LOVELY_USERS_PLUGIN_DIR . '/../templates/setting-page.php';
     }
 
     /**

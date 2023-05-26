@@ -2,19 +2,11 @@
 
 declare(strict_types=1);
 
-use Inpsyde\MyLovelyUsers\Lib\WpCache;
+use DI\ContainerBuilder;
 use Inpsyde\MyLovelyUsers\MyLovelyUsers;
-use Inpsyde\MyLovelyUsers\Lib\HttpClient;
-use Inpsyde\MyLovelyUsers\Includes\Setting;
-use Inpsyde\MyLovelyUsers\Lib\MonologLogger;
 use Inpsyde\MyLovelyUsers\Includes\Activator;
-use Inpsyde\MyLovelyUsers\Includes\UserTable;
 use Inpsyde\MyLovelyUsers\Includes\Deactivator;
-use Inpsyde\MyLovelyUsers\Includes\UserDetails;
-use Inpsyde\MyLovelyUsers\Includes\UserFetcher;
-use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
-use Inpsyde\MyLovelyUsers\Includes\UserTableShortcode;
-use Inpsyde\MyLovelyUsers\Includes\EndpointRegistration;
+
 /**
  * The plugin bootstrap file
  *
@@ -61,34 +53,22 @@ register_deactivation_hook( __FILE__, [Deactivator::class, 'deactivate'] );
 // Initialize the plugin
 function my_lovely_users_init()
 {
-    // Create instances of required classes and components
-    $wpCache = new WpCache(); // Provides caching functionality
-    $httpClient = new HttpClient(); // Performs HTTP requests
 
-    // Create an instance of the logger using the MonologLogger class
-    $logger = new MonologLogger();
+    // Load dependencies
+    $dependencies = require MY_LOVELY_USERS_PLUGIN_DIR . 'src/Dependencies.php';
 
-    $userFetcher = new UserFetcher($wpCache, $httpClient, $logger); // Fetches user data
+    // Create the container builder
+    $containerBuilder = new ContainerBuilder();
 
-    $userRenderer = new UsersRenderer(); // Renders user data for display
+    // Configure the container with the dependencies
+    $containerBuilder->addDefinitions($dependencies);
 
-    $usersTable = new UserTable($userFetcher, $userRenderer, $logger); // Handles fetching and rendering a table of users
-    $userDetails = new UserDetails($userFetcher, $userRenderer, $logger); // Handles fetching and rendering user details
-    $endpointRegistration = new EndpointRegistration();
-    $setting = new Setting();
-    $userTableShortcode = new UserTableShortcode($usersTable);
-
+    // Build the container
+    $container = $containerBuilder->build();
 
     // Create an instance of the MyLovelyUsers plugin and pass the dependencies
     if (class_exists(MyLovelyUsers::class)) {
-        $myLovelyUsers = new MyLovelyUsers(
-            $endpointRegistration,
-            $setting,
-            $usersTable,
-            $userDetails,
-            $userTableShortcode,
-            $logger
-        );
+        $myLovelyUsers = $container->get(MyLovelyUsers::class);
         $myLovelyUsers->init();
     }
 }
