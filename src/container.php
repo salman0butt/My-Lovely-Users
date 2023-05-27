@@ -34,21 +34,17 @@ return static function (): Container {
     // config
     $logFilePath = WP_CONTENT_DIR . '/debug.log';
     $logLevel = Logger::DEBUG;
-    $cacheExpireTime = 3600;
-    $apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
     $dependencies = [
         WpCache::class => new WpCache(),
         HttpClient::class => new HttpClient(),
         MonologLogger::class => new MonologLogger($logFilePath, $logLevel),
         Setting::class => new Setting(),
-        UserFetcher::class => static function (Container $container) use ($cacheExpireTime, $apiUrl): UserFetcher {
+        UserFetcher::class => static function (Container $container): UserFetcher {
             return new UserFetcher(
                 $container->get(WpCache::class),
                 $container->get(HttpClient::class),
-                $container->get(MonologLogger::class),
-                $cacheExpireTime,
-                $apiUrl
+                $container->get(MonologLogger::class)
             );
         },
         UsersRenderer::class => new UsersRenderer(),
