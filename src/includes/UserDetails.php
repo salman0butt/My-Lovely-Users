@@ -15,10 +15,13 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Exceptions\UserFetcherException;
+use Inpsyde\MyLovelyUsers\Exceptions\UserRendererException;
 use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserDetailsInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
+use UserDetailsException;
 
 class UserDetails implements UserDetailsInterface
 {
@@ -89,35 +92,73 @@ class UserDetails implements UserDetailsInterface
      */
     public function handleAjaxRequest(): void
     {
-        try {
-            // Sanitize the user_id and nonce.
-            $userId = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
-            $nonce = isset($_POST['my_plugin_nonce']) ?
-            sanitize_key($_POST['my_plugin_nonce']) :
-            '';
+        $userId = isset($_POST['user_id']) ? (int) $_POST['user_id'] : 0;
+        $nonce = isset($_POST['my_plugin_nonce']) ? sanitize_key($_POST['my_plugin_nonce']) : '';
 
-            // Check if user ID is valid.
+        try {
             if (!$userId) {
-                throw new Exception('Invalid user ID.');
+                throw new UserDetailsException('Invalid user ID.');
             }
 
-            // Verify nonce to prevent CSRF attacks.
             $nonceVerified = isset($nonce) && wp_verify_nonce($nonce, 'my_lovely_user_nonce');
 
             if (!$nonceVerified) {
-                throw new Exception('Security check failed.');
+                throw new UserDetailsException('Security check failed.');
             }
 
-            // Fetch user details using the UserFetcher instance.
-            $user = $this->userFetcher->fetchUser($userId);
-            // Render user details using the UserRenderer instance.
-            $output = $this->userRenderer->renderUserDetail($user);
+            $user = $this->fetchUser($userId);
+            $output = $this->renderUserDetail($user);
 
             wp_send_json_success($output);
-        } catch (Exception $exception) {
-            // Log the error message
-            $this->logger->logError('An error occurred: ' . $exception->getMessage());
-            wp_send_json_error("Something went wrong.");
+        } catch (UserDetailsException $exception) {
+            $this->handleException($exception);
         }
+    }
+
+    /**
+     * Fetch user details.
+     *
+     * @param int $userId The user ID.
+     *
+     * @return array The user details.
+     *
+     * @throws UserDetailsException If an error occurs while fetching the user details.
+     */
+    private function fetchUser(int $userId): array
+    {
+        try {
+            return $this->userFetcher->fetchUser($userId);
+        } catch (UserFetcherException $exception) {
+            throw new UserDetailsException('Error fetching user: ' . $exception->getMessage());
+        }
+    }
+
+    /**
+     * Render user detail.
+     *
+     * @param array $user The user details.
+     *
+     * @return string The rendered user detail.
+     *
+     * @throws UserDetailsException If an error occurs while rendering the user detail.
+     */
+    private function renderUserDetail(array $user): string
+    {
+        try {
+            return $this->userRenderer->renderUserDetail($user);
+        } catch (UserRendererException $exp) {
+            throw new UserDetailsException('Error rendering user detail: ' . $exp->getMessage());
+        }
+    }
+
+    /**
+     * Handle the UserDetailsException.
+     *
+     * @param UserDetailsException $exception The exception to handle.
+     */
+    private function handleException(UserDetailsException $exception): void
+    {
+        $this->logger->logError('An error occurred: ' . $exception->getMessage());
+        wp_send_json_error('Something went wrong.');
     }
 }

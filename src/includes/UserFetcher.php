@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Exceptions\UserFetcherException;
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
@@ -117,6 +118,7 @@ class UserFetcher implements UserFetcherInterface
             } catch (Exception $exception) {
                 // Log the error message with additional details
                 $this->logger->logError('An error occurred: ' . $exception->getMessage());
+                throw new UserFetcherException('An error occurred while fetching users data.');
             }
         }
         // Return the fetched user data.
@@ -143,6 +145,7 @@ class UserFetcher implements UserFetcherInterface
             } catch (Exception $exception) {
                 // Log the error message with additional details
                 $this->logger->logError('An error occurred: ' . $exception->getMessage());
+                throw new UserFetcherException('An error occurred while fetching user data.');
             }
         }
 

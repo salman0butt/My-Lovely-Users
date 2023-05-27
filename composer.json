@@ -7,6 +7,7 @@
             "Inpsyde\\MyLovelyUsers\\": "src/",
             "Inpsyde\\MyLovelyUsers\\Interfaces\\": "src/interfaces/",
             "Inpsyde\\MyLovelyUsers\\Includes\\": "src/includes/",
+            "Inpsyde\\MyLovelyUsers\\Exceptions\\": "src/exceptions/",
             "Inpsyde\\MyLovelyUsers\\Lib\\": "src/lib/",
             "Inpsyde\\MyLovelyUsers\\Test\\Unit\\": "tests/PHPUnit/Unit"
         }

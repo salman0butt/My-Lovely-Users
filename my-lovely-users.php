@@ -56,7 +56,7 @@ function my_lovely_users_init()
     $containerFactory = require MY_LOVELY_USERS_PLUGIN_DIR . 'src/container.php';
     $container = $containerFactory();
 
-    // Create an instance of the MyLovelyUsers plugin and pass the dependencies
+    // Create an instance of the MyLovelyUsers plugin using Depdencies Conatiner
     if (class_exists(MyLovelyUsers::class)) {
         $myLovelyUsers = $container->get(MyLovelyUsers::class);
         $myLovelyUsers->init();

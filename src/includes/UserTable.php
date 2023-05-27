@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Exceptions\UserTableException;
 use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
@@ -85,21 +86,29 @@ class UserTable implements UserTableInterface
         } catch (Exception $exception) {
             // Log the error message
             $this->logger->logError('An error occurred: ' . $exception->getMessage());
-            throw $exception;
+            throw new UserTableException('An error occurred during user fetching.');
         }
     }
 
     /**
      * Renders a table of users using UserRendererInterface.
      *
-     * @throws Exception If an error occurs during user rendering.
+     * @throws UserTableException If an error occurs during user rendering.
      */
     public function render(): void
     {
 
-        $renderTable = get_query_var('my_lovely_users_table');
-        if ($renderTable) {
-            $this->showUserTable();
+        try {
+            $renderTable = get_query_var('my_lovely_users_table');
+            if ($renderTable) {
+                $this->showUserTable();
+            }
+        } catch (Exception $exp) {
+            // Log the error message
+            $this->logger->logError(
+                'An error occurred during user rendering: ' . $exp->getMessage()
+            );
+            throw new UserTableException('An error occurred during user rendering.');
         }
     }
 
@@ -127,6 +136,7 @@ class UserTable implements UserTableInterface
                 return;
             }
 
+            // pass data using filter
             add_filter('my_lovely_users_template_data', static function () use ($usersData) {
                 return $usersData;
             });
@@ -136,7 +146,7 @@ class UserTable implements UserTableInterface
         } catch (Exception $exception) {
             // Log the error message
             $this->logger->logError('An error occurred: ' . $exception->getMessage());
-            throw $exception;
+            throw new UserTableException('An error occurred during user rendering.');
         }
     }
 

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Template Name: Users Detail
+ *
+ * This template file is used to display a Users Details
+ *
+ * @package MyLovelyUsers
+ */
+
 declare(strict_types=1);
 
 // Check if $user is set and initialize it to an empty array if it isn't.

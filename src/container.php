@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Dependency injection container configuration.
  *
  * @return Container The configured DI container.
  */
+
+declare(strict_types=1);
 
 use DI\Container;
 use DI\ContainerBuilder;
@@ -22,7 +22,7 @@ use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
 use Inpsyde\MyLovelyUsers\Includes\UserTableShortcode;
 use Inpsyde\MyLovelyUsers\Includes\EndpointRegistration;
 
-return function () {
+return static function (): Container {
     $dependencies = [
         WpCache::class => new WpCache(),
         HttpClient::class => new HttpClient(),
@@ -69,7 +69,7 @@ return function () {
     // Create the container builder
     $containerBuilder = new ContainerBuilder();
     $containerBuilder->useAutowiring(true);
-    
+
     // Configure the container with the dependencies
     $containerBuilder->addDefinitions($dependencies);
 

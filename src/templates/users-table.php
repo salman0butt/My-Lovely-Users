@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Template Name: Users Table
+ *
+ * This template file is used to display a users table.
+ *
+ * @package MyLovelyUsers
+ */
+
 declare(strict_types=1);
 
 $users = $users ?? [];

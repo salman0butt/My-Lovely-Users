@@ -3,7 +3,7 @@
 /**
  * Template Name: Users Table Page
  *
- * This template file is used to display a custom users table.
+ * This template file is used to display a users table page.
  *
  * @package MyLovelyUsers
  */
