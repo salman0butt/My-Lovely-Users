@@ -14,7 +14,7 @@ Follow these steps to install the My Lovely Users plugin:
 
 1. Upload `my-lovely-users` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Navigate to /wp-content/plugins/my-lovely-users and run the following command to install the required dependencies using Composer:
+1. Navigate to `/wp-content/plugins/my-lovely-users` and run the following command to install the required dependencies using Composer:
 
 ```bash
   composer install
