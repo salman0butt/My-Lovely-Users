@@ -90,8 +90,8 @@ class UserFetcher implements UserFetcherInterface
         CacheInterface $cache,
         HttpClientInterface $httpClient,
         LoggerInterface $logger,
-        int $cacheExpireTime,
-        string $apiUrl
+        int $cacheExpireTime = 3600,
+        string $apiUrl = 'https://jsonplaceholder.typicode.com/users'
     ) {
 
         $this->httpClient = $httpClient;
