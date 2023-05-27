@@ -40,6 +40,7 @@ MY_LOVELY_USERS_ENDPOINT - the default endpoint (default is my-lovely-users-tabl
 The My Lovely Users plugin provides custom hooks that allow you to extend its features and functionality.
 
 1. Shortcode (Display the Usertable Via Shortcode)
+
 `[my_lovely_user_table]` use this Shortcode to display Userstable
 
 1. Custom Hooks
