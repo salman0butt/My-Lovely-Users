@@ -22,6 +22,13 @@ use Inpsyde\MyLovelyUsers\Includes\UsersRenderer;
 use Inpsyde\MyLovelyUsers\Includes\UserTableShortcode;
 use Inpsyde\MyLovelyUsers\Includes\EndpointRegistration;
 
+
+/**
+ * Configure and build the DI container.
+ *
+ * @return Container The configured DI container.
+ */
+
 return static function (): Container {
     $dependencies = [
         WpCache::class => new WpCache(),
