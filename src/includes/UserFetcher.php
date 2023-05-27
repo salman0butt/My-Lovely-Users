@@ -17,11 +17,14 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Exceptions\HttpClientException;
 use Inpsyde\MyLovelyUsers\Exceptions\UserFetcherException;
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
+
+use function PHPUnit\Framework\throwException;
 
 class UserFetcher implements UserFetcherInterface
 {
@@ -87,8 +90,8 @@ class UserFetcher implements UserFetcherInterface
         CacheInterface $cache,
         HttpClientInterface $httpClient,
         LoggerInterface $logger,
-        int $cacheExpireTime = 3600,
-        string $apiUrl = 'https://jsonplaceholder.typicode.com/users'
+        int $cacheExpireTime,
+        string $apiUrl
     ) {
 
         $this->httpClient = $httpClient;
@@ -102,50 +105,54 @@ class UserFetcher implements UserFetcherInterface
      * Fetches the user data from the API or from the cache if available.
      *
      * @return array The fetched user data.
-     *
-     * @throws Exception If an error occurs while fetching user data from the API.
+     * @throws UserFetcherException If an error occurs while fetching user data.
      */
     public function fetchUsers(): array
     {
         $cacheKey = self::USER_CACHE_PREFIX;
         $users = $this->cache->get($cacheKey);
 
-        // If user data is not available in the cache, fetch it from the API and store it in the cache.
         if (!$users) {
             try {
                 $users = $this->httpClient->get($this->apiUrl);
                 $this->cache->set($cacheKey, $users, $this->cacheExpireTime);
-            } catch (Exception $exception) {
+            } catch (HttpClientException $exp) {
                 // Log the error message with additional details
-                $this->logger->logError('An error occurred: ' . $exception->getMessage());
-                throw new UserFetcherException('An error occurred while fetching users data.');
+                $this->logger->logError(
+                    "An error occurred while fetching users data from the API: " . $exp->getMessage()
+                );
+                throw new UserFetcherException(
+                    'An error occurred while fetching users data from the API.'
+                );
             }
         }
-        // Return the fetched user data.
+
         return $users;
     }
 
     /**
      * Fetches the single user data from the API or from the cache if available.
      *
+     * @param int $userId The ID of the user to fetch.
      * @return array The fetched user data.
-     *
-     * @throws Exception If an error occurs while fetching user data from the API.
+     * @throws UserFetcherException If an error occurs while fetching user data.
      */
     public function fetchUser(int $userId): array
     {
         $cacheKey = self::USER_DETAILS_CACHE_PREFIX . $userId;
         $user = $this->cache->get($cacheKey);
 
-        // If user data is not available in the cache, fetch it from the API and store it in the cache.
         if (!$user) {
             try {
                 $user = $this->httpClient->get($this->apiUrl . "/" . $userId);
                 $this->cache->set($cacheKey, $user, $this->cacheExpireTime);
-            } catch (Exception $exception) {
+            } catch (HttpClientException $exception) {
                 // Log the error message with additional details
-                $this->logger->logError('An error occurred: ' . $exception->getMessage());
-                throw new UserFetcherException('An error occurred while fetching user data.');
+                $this->logger->logError(
+                    "An error occurred while fetching user data for ID $userId from the API: " . $exception->getMessage()
+                );
+                // If caching fails, it should not propagate the exception but continue without caching the data
+                throw new UserFetcherException("Failed to fetch user data for ID $userId from API.");
             }
         }
 

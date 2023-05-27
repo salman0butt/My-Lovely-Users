@@ -128,7 +128,7 @@ class UserDetails implements UserDetailsInterface
         try {
             return $this->userFetcher->fetchUser($userId);
         } catch (UserFetcherException $exception) {
-            throw new UserDetailsException('Error fetching user: ' . $exception->getMessage());
+            throw new UserDetailsException('Error fetching user Data: ' . $exception->getMessage());
         }
     }
 

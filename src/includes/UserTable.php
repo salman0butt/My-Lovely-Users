@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Exception;
+use Inpsyde\MyLovelyUsers\Exceptions\UserRendererException;
+use Inpsyde\MyLovelyUsers\Exceptions\UserFetcherException;
 use Inpsyde\MyLovelyUsers\Exceptions\UserTableException;
 use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
@@ -77,16 +79,20 @@ class UserTable implements UserTableInterface
      * Fetches an array of users using UserFetcherInterface.
      *
      * @return array The fetched users.
-     * @throws Exception If an error occurs during user fetching.
+     * @throws UserFetcherException If an error occurs during user fetching.
      */
     public function fetchUsers(): array
     {
         try {
             return $this->userFetcher->fetchUsers();
+        } catch (UserFetcherException $exception) {
+            $errorMessage = 'An error occurred during user fetching: ' . $exception->getMessage();
+            $this->logger->logError($errorMessage);
+            throw $exception;
         } catch (Exception $exception) {
-            // Log the error message
-            $this->logger->logError('An error occurred: ' . $exception->getMessage());
-            throw new UserTableException('An error occurred during user fetching.');
+            $errorMessage = 'An unexpected error occurred during user fetching: ' . $exception->getMessage();
+            $this->logger->logError($errorMessage);
+            throw new UserFetcherException($errorMessage);
         }
     }
 
@@ -103,12 +109,12 @@ class UserTable implements UserTableInterface
             if ($renderTable) {
                 $this->showUserTable();
             }
-        } catch (Exception $exp) {
-            // Log the error message
-            $this->logger->logError(
-                'An error occurred during user rendering: ' . $exp->getMessage()
-            );
-            throw new UserTableException('An error occurred during user rendering.');
+        } catch (UserTableException $exception) {
+            $this->logger->logError('An error occurred during user table rendering: ' . $exception->getMessage());
+            throw $exception;
+        } catch (Exception $exception) {
+            $this->logger->logError('An unexpected error occurred during user table rendering: ' . $exception->getMessage());
+            throw new UserTableException('An unexpected error occurred during user table rendering.');
         }
     }
 
@@ -116,7 +122,7 @@ class UserTable implements UserTableInterface
      * Renders the user table.
      *
      * @param bool $isShortcode
-     * @throws Exception If an error occurs during user rendering.
+     * @throws UserFetcherException If an error occurs during user rendering.
      */
     public function showUserTable(bool $isShortcode = false): void
     {
@@ -124,7 +130,7 @@ class UserTable implements UserTableInterface
             $users = $this->fetchUsers();
 
             if (empty($users)) {
-                throw new Exception('No users found.');
+                throw new UserFetcherException('No users found.');
             }
 
             // Rendered users data
@@ -143,6 +149,14 @@ class UserTable implements UserTableInterface
 
             // Render the template
             $this->renderTemplate();
+        } catch (UserFetcherException $exception) {
+            // Log the error message
+            $this->logger->logError('An error occurred during user fetching: ' . $exception->getMessage());
+            throw new UserTableException('An error occurred during user fetching: ' . $exception->getMessage());
+        } catch (UserRendererException $exception) {
+            // Log the error message
+            $this->logger->logError('An error occurred during user rendering: ' . $exception->getMessage());
+            throw new UserTableException('An error occurred during user rendering: ' . $exception->getMessage());
         } catch (Exception $exception) {
             // Log the error message
             $this->logger->logError('An error occurred: ' . $exception->getMessage());

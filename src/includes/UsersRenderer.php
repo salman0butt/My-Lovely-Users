@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 
-use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
 use Inpsyde\MyLovelyUsers\Exceptions\TemplateNotFoundException;
+use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
 
 class UsersRenderer implements UserRendererInterface
 {
@@ -29,11 +29,16 @@ class UsersRenderer implements UserRendererInterface
      */
     public function renderUsersTable(array $users): string
     {
-        $templatePath = $this->getTemplatePath('users-table.php');
+        $template = 'users-table.php';
+        try {
+            $templatePath = $this->getTemplatePath($template);
 
-        ob_start();
-        include $templatePath;
-        return ob_get_clean();
+            ob_start();
+            include $templatePath;
+            return ob_get_clean();
+        } catch (TemplateNotFoundException $exception) {
+            throw $exception; // Rethrow the caught exception
+        }
     }
 
     /**
@@ -46,11 +51,16 @@ class UsersRenderer implements UserRendererInterface
      */
     public function renderUserDetail(array $user): string
     {
-        $templatePath = $this->getTemplatePath('users-detail.php');
+        $template = 'users-detail.php';
+        try {
+            $templatePath = $this->getTemplatePath($template);
 
-        ob_start();
-        include $templatePath;
-        return ob_get_clean();
+            ob_start();
+            include $templatePath;
+            return ob_get_clean();
+        } catch (TemplateNotFoundException $exception) {
+            throw $exception; // Rethrow the caught exception
+        }
     }
 
     /**
