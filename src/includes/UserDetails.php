@@ -14,14 +14,13 @@ declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 
-use Exception;
+use Inpsyde\MyLovelyUsers\Exceptions\UserDetailsException;
 use Inpsyde\MyLovelyUsers\Exceptions\UserFetcherException;
 use Inpsyde\MyLovelyUsers\Exceptions\UserRendererException;
 use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserDetailsInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
-use UserDetailsException;
 
 class UserDetails implements UserDetailsInterface
 {

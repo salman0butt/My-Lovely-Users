@@ -15,8 +15,7 @@ declare(strict_types=1);
 namespace Inpsyde\MyLovelyUsers\Includes;
 
 use Inpsyde\MyLovelyUsers\Interfaces\UserRendererInterface;
-use Inpsyde\MyLovelyUsers\Includes\Exceptions\TemplateNotFoundException;
-use RuntimeException;
+use Inpsyde\MyLovelyUsers\Exceptions\TemplateNotFoundException;
 
 class UsersRenderer implements UserRendererInterface
 {

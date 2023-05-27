@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
-use Inpsyde\MyLovelyUsers\MyLovelyUsers;
 use Inpsyde\MyLovelyUsers\Includes\Activator;
 use Inpsyde\MyLovelyUsers\Includes\Deactivator;
+use Inpsyde\MyLovelyUsers\MyLovelyUsers;
 
 /**
  * The plugin bootstrap file
@@ -31,7 +31,7 @@ use Inpsyde\MyLovelyUsers\Includes\Deactivator;
  */
 
 // If this file is called directly, abort.
-if (! defined('WPINC')) {
+if (!defined('WPINC')) {
     die;
 }
 
@@ -45,18 +45,17 @@ define('MY_LOVELY_USERS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 require_once MY_LOVELY_USERS_PLUGIN_DIR . 'vendor/autoload.php';
 
 // Activate and deactivate hooks
-register_activation_hook( __FILE__, [Activator::class, 'activate'] );
-register_deactivation_hook( __FILE__, [Deactivator::class, 'deactivate'] );
-
+register_activation_hook(__FILE__, [Activator::class, 'activate']);
+register_deactivation_hook(__FILE__, [Deactivator::class, 'deactivate']);
 
 // Initialize the plugin
 function my_lovely_users_init()
 {
-    // Load conatiner
+    // Load container
     $containerFactory = require MY_LOVELY_USERS_PLUGIN_DIR . 'src/container.php';
     $container = $containerFactory();
 
-    // Create an instance of the MyLovelyUsers plugin using Depdencies Conatiner
+    // Create an instance of the MyLovelyUsers plugin using Depdencies Container
     if (class_exists(MyLovelyUsers::class)) {
         $myLovelyUsers = $container->get(MyLovelyUsers::class);
         $myLovelyUsers->init();
