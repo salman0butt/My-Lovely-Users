@@ -5,8 +5,7 @@ The My Lovely Users plugin is designed to fetch users' data from a third-party A
 To use the My Lovely Users plugin, ensure that your environment meets the following requirements:
 
 1. PHP version 8.1 or higher
-1. Composer dependency manager to install required dependencies like Inpsyde code style, PHPCS, PHPUNIT, Brain Monkey, etc.
-
+1. Composer dependency manager to install required dependencies like Inpsyde code style, PHPCS, Phpunit, Brain Monkey, PHP-DI, Monolog etc.
 
 ## Installation
 
