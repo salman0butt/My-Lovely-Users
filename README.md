@@ -35,7 +35,7 @@ The default endpoint is my-lovely-users-table. Additionally, you can define the 
 
 MY_LOVELY_USERS_VERSION - the version number of the plugin (default is 1.0.0)
 MY_LOVELY_USERS_NAME - the name of the plugin (default is my-lovely-users)
-MY_LOVELY_USERS_ENDPOINT - the default endforeach (default is my-lovely-users-table)
+MY_LOVELY_USERS_ENDPOINT - the default endpoint (default is my-lovely-users-table)
 
 ## Extending Features with Custom Hooks
 The My Lovely Users plugin provides custom hooks that allow you to extend its features and functionality.
