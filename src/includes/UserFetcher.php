@@ -16,15 +16,12 @@ declare(strict_types=1);
 
 namespace Inpsyde\MyLovelyUsers\Includes;
 
-use Exception;
 use Inpsyde\MyLovelyUsers\Exceptions\HttpClientException;
 use Inpsyde\MyLovelyUsers\Exceptions\UserFetcherException;
 use Inpsyde\MyLovelyUsers\Interfaces\CacheInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\HttpClientInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\LoggerInterface;
 use Inpsyde\MyLovelyUsers\Interfaces\UserFetcherInterface;
-
-use function PHPUnit\Framework\throwException;
 
 class UserFetcher implements UserFetcherInterface
 {
@@ -83,8 +80,8 @@ class UserFetcher implements UserFetcherInterface
      * @param HttpClientInterface $httpClient The HTTP client used to make requests to the API.
      * @param LoggerInterface $logger The Logger to log.
      * @param int $cacheExpireTime The amount of time in seconds for which to
-     * cache the fetched user data.
-     * @param string $apiUrl The URL of the API to fetch user data from.
+     * cache the fetched user data. default value is 3600.
+     * @param string $apiUrl The URL of the API to fetch user data from. default apiUrl set
      */
     public function __construct(
         CacheInterface $cache,
@@ -119,10 +116,10 @@ class UserFetcher implements UserFetcherInterface
             } catch (HttpClientException $exp) {
                 // Log the error message with additional details
                 $this->logger->logError(
-                    "An error occurred while fetching users data from the API: " . $exp->getMessage()
+                    "An error occurred while fetching data from the API: " . $exp->getMessage()
                 );
                 throw new UserFetcherException(
-                    'An error occurred while fetching users data from the API.'
+                    'An error occurred while fetching data from the API.'
                 );
             }
         }
@@ -148,11 +145,10 @@ class UserFetcher implements UserFetcherInterface
                 $this->cache->set($cacheKey, $user, $this->cacheExpireTime);
             } catch (HttpClientException $exception) {
                 // Log the error message with additional details
-                $this->logger->logError(
-                    "An error occurred while fetching user data for ID $userId from the API: " . $exception->getMessage()
-                );
+                $errMessage = "Failed to fetch user data from API." . $exception->getMessage();
+                $this->logger->logError($errMessage);
                 // If caching fails, it should not propagate the exception but continue without caching the data
-                throw new UserFetcherException("Failed to fetch user data for ID $userId from API.");
+                throw new UserFetcherException($errMessage);
             }
         }
 

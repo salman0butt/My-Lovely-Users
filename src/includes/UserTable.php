@@ -90,7 +90,7 @@ class UserTable implements UserTableInterface
             $this->logger->logError($errorMessage);
             throw $exception;
         } catch (Exception $exception) {
-            $errorMessage = 'An unexpected error occurred during user fetching: ' . $exception->getMessage();
+            $errorMessage = 'An unexpected error occurred: ' . $exception->getMessage();
             $this->logger->logError($errorMessage);
             throw new UserFetcherException($errorMessage);
         }
@@ -110,11 +110,11 @@ class UserTable implements UserTableInterface
                 $this->showUserTable();
             }
         } catch (UserTableException $exception) {
-            $this->logger->logError('An error occurred during user table rendering: ' . $exception->getMessage());
+            $this->logger->logError('Failed to render users table: ' . $exception->getMessage());
             throw $exception;
         } catch (Exception $exception) {
-            $this->logger->logError('An unexpected error occurred during user table rendering: ' . $exception->getMessage());
-            throw new UserTableException('An unexpected error occurred during user table rendering.');
+            $this->logger->logError('Failed to render users table: ' . $exception->getMessage());
+            throw new UserTableException('An unexpected error Failed to render users table.');
         }
     }
 
@@ -151,12 +151,13 @@ class UserTable implements UserTableInterface
             $this->renderTemplate();
         } catch (UserFetcherException $exception) {
             // Log the error message
-            $this->logger->logError('An error occurred during user fetching: ' . $exception->getMessage());
-            throw new UserTableException('An error occurred during user fetching: ' . $exception->getMessage());
+            $this->logger->logError('Failed to fetch users data: ' . $exception->getMessage());
+            throw new UserTableException('Failed to fetch users data: ' . $exception->getMessage());
         } catch (UserRendererException $exception) {
             // Log the error message
-            $this->logger->logError('An error occurred during user rendering: ' . $exception->getMessage());
-            throw new UserTableException('An error occurred during user rendering: ' . $exception->getMessage());
+            $errMessage = 'Failed to fetch users data: ' . $exception->getMessage();
+            $this->logger->logError($errMessage);
+            throw new UserTableException($errMessage);
         } catch (Exception $exception) {
             // Log the error message
             $this->logger->logError('An error occurred: ' . $exception->getMessage());
