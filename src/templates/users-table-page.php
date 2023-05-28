@@ -26,3 +26,4 @@ if (!empty($usersData)) {
 if (!empty(locate_template('footer.php'))) {
     get_footer();
 }
+exit();
