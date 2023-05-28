@@ -36,24 +36,68 @@ class EndpointRegistration implements EndpointRegistrationInterface
      */
     public function registerCustomEndpoint(): void
     {
-        // Retrieve the value of the 'my_lovely_users_endpoint' option.
-        $endpoint = get_option('my_lovely_users_endpoint');
+        $endpoint = $this->getEndpointOption();
 
-        // If the option is not set or empty, use a default value.
         if (!$endpoint) {
             $endpoint = 'my-lovely-users-table';
         }
 
-        // Sanitize the endpoint value to ensure it contains only valid characters.
-        $endpoint = sanitize_text_field($endpoint);
+        $endpoint = $this->sanitizeEndpoint($endpoint);
 
-        // Register the custom endpoint with WordPress using the add_rewrite_rule() function.
+        $this->addRewriteRule($endpoint);
+        $this->addRewriteTag();
+        $this->flushRewriteRules();
+    }
+
+    /**
+     * Retrieve the value of the 'my_lovely_users_endpoint' option.
+     *
+     * @return string|null The endpoint value.
+     */
+    private function getEndpointOption(): ?string
+    {
+        return get_option('my_lovely_users_endpoint');
+    }
+
+    /**
+     * Sanitize the endpoint value to ensure it contains only valid characters.
+     *
+     * @param string $endpoint The endpoint value.
+     * @return string The sanitized endpoint value.
+     */
+    private function sanitizeEndpoint(string $endpoint): string
+    {
+        return sanitize_text_field($endpoint);
+    }
+
+    /**
+     * Register the custom endpoint with WordPress using the add_rewrite_rule() function.
+     *
+     * @param string $endpoint The endpoint value.
+     * @return void
+     */
+    private function addRewriteRule(string $endpoint): void
+    {
         add_rewrite_rule($endpoint, 'index.php?my_lovely_users_table=1', 'top');
+    }
 
-        // Register a rewrite tag to capture the value of the custom endpoint.
+    /**
+     * Register a rewrite tag to capture the value of the custom endpoint.
+     *
+     * @return void
+     */
+    private function addRewriteTag(): void
+    {
         add_rewrite_tag('%my_lovely_users_table%', '1');
+    }
 
-        // Flush the rewrite rules to ensure the custom endpoint works correctly.
+    /**
+     * Flush the rewrite rules to ensure the custom endpoint works correctly.
+     *
+     * @return void
+     */
+    private function flushRewriteRules(): void
+    {
         flush_rewrite_rules();
     }
 }
