@@ -32,7 +32,7 @@ class UserFetcherTest extends AbstractTestCase
         $this->loggerMock = $this->createMock(LoggerInterface::class);
     }
 
-    public function testFetchUsers()
+    public function testFetchUsers(): void
     {
         $users = [
             [
@@ -50,16 +50,17 @@ class UserFetcherTest extends AbstractTestCase
         ];
 
         $this->httpClientMock->expects($this->once())
-            ->method('get')->willReturn($users);
+            ->method('get')
+            ->willReturn($users);
 
         // Create a new UserFetcher instance with the mock objects
         $userFetcher = new UserFetcher($this->cacheMock, $this->httpClientMock, $this->loggerMock);
 
         // Assert that the fetched user data matches the expected data
-        $this->assertEquals($users, $userFetcher->fetchUsers());
+        $this->assertSame($users, $userFetcher->fetchUsers());
     }
 
-    public function testFetchUser()
+    public function testFetchUser(): void
     {
         $user = [
             "id" => 1,
@@ -86,13 +87,14 @@ class UserFetcherTest extends AbstractTestCase
         ];
 
         $this->httpClientMock->expects($this->once())
-            ->method('get')->willReturn($user);
+            ->method('get')
+            ->willReturn($user);
 
         // Create a new UserFetcher instance with the mock objects
         $userFetcher = new UserFetcher($this->cacheMock, $this->httpClientMock, $this->loggerMock);
 
         // Assert that the fetched user data matches the expected data
-        $this->assertEquals($user, $userFetcher->fetchUser(1));
+        $this->assertSame($user, $userFetcher->fetchUser(1));
     }
 
 }
