@@ -115,24 +115,24 @@ To run PHPCS (PHP CodeSniffer), execute the following command:
 
 ## non-obvious implementation choices
 
-1. Dependency Injection with PHP-DI Container: To improve dependency management and facilitate testing, the plugin utilizes the PHP-DI container. The container allows for easy management of dependencies and promotes loose coupling between classes. This helps to make the code more modular and maintainable. For example, the plugin uses the container to inject the `UserFetcher` into the main plugin class, allowing seamless retrieval and manipulation of user data. This also makes it easier to swap out implementations or extend functionality in a flexible manner.
+1. Dependency Injection with PHP-DI Container: The plugin uses a container to manage dependencies, making the code modular and testable.
 
-1. Custom Hooks for Extending Functionality: The My Lovely Users plugin provides custom hooks that allow developers to extend its features and add custom functionality. These hooks enable the addition of custom content, modification of table structures, and integration with other plugins or themes.
+1. Custom Hooks for Extending Functionality: Custom hooks allow developers to add custom features and integrate with other plugins or themes.
 
-1. Interfaces for Better Code Architecture: The My Lovely Users plugin utilizes interfaces to define contracts for certain classes. These interfaces provide a clear separation between the contract and the implementation, making the code more flexible and maintainable.For example, the `UserFetcherInterface` defines the contract for a user fetcher class, allowing different implementations to be used interchangeably. This enables easy integration with various data sources or database systems without affecting other parts of the code.By leveraging interfaces, the plugin promotes a more modular and extensible codebase, making it easier to introduce new features or swap out implementations when needed.
+1. Interfaces for Better Code Architecture: Interfaces define contracts, promoting flexible and maintainable code.
 
-1. Cache Interface: Instead of relying on WordPress caching functions, the plugin implements its own CacheInterface using the WpCache class. This choice provides greater control and flexibility over caching mechanisms, allowing for easy integration with different caching systems like Redis or Memcache in the future.
+1. Cache Interface: The plugin implements its own caching mechanism for better control and integration with different caching systems.
 
-1. HTTP Client: The plugin utilizes an HTTP Client interface to perform HTTP requests. By abstracting the HTTP communication, it becomes easier to mock and test the plugin's interactions with external APIs, as well as allowing for the possibility of switching to a different HTTP client implementation if needed.
+1. HTTP Client: An HTTP client interface is used for performing HTTP requests, making it easier to test and switch implementations.
 
-1. Custom Endpoint: The plugin registers a custom endpoint /my-lovely-users-table to display the table of users fetched from a third-party API. This decision grants more control over the display and integration of the user table with other content in the WordPress site.
+1. Custom Endpoint: A custom endpoint is registered to display a user table fetched from a third-party API.
 
-1. Custom Exceptions for Error Handling: The My Lovely Users plugin utilizes custom exceptions to handle errors in a structured and manageable way. Custom exceptions are used to encapsulate specific error scenarios and provide meaningful error messages to users or developers.For example, the plugin may throw a `TemplateNotFoundException` if a requested template file not found. This exception can be caught and handled appropriately, allowing for graceful error handling and providing feedback to the user.By employing custom exceptions, the plugin ensures that error handling is consistent and allows for precise identification and resolution of potential issues.These implementation choices contribute to the overall maintainability, flexibility, and extensibility of the My Lovely Users plugin, enabling developers to customize and enhance its functionality according to their requirements.
+1. Custom Exceptions for Error Handling: Custom exceptions provide structured error handling and meaningful error messages.
 
-1. Logger Interface and Mono Logger for Logging: The My Lovely Users plugin implements a logger interface to enable logging of important events or errors. The logger interface defines a contract for logging functionality, allowing different logger implementations to be used.The plugin includes the Mono Logger class as a concrete implementation of the logger interface. The Mono Logger class provides a simple and efficient logging solution, writing logs to a specified file or output channel.
-By utilizing the logger interface and the Mono Logger class, the plugin enables developers to log relevant information, debug issues, and monitor the plugin's behavior.
+1. Logger Interface and Mono Logger for Logging: A logger interface is used for logging events, and the Mono Logger class is a concrete implementation.
 
-1. Nonces: To enhance security and prevent Cross-Site Request Forgery (CSRF) attacks, the plugin utilizes WordPress nonces for AJAX requests. This safeguard ensures that only authorized users can access the plugin's AJAX functions, maintaining the integrity of user data.
+1. Nonces: WordPress nonces are used for security and preventing CSRF attacks in AJAX requests.
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
