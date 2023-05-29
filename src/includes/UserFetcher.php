@@ -115,12 +115,9 @@ class UserFetcher implements UserFetcherInterface
                 $this->cache->set($cacheKey, $users, $this->cacheExpireTime);
             } catch (HttpClientException $exp) {
                 // Log the error message with additional details
-                $this->logger->logError(
-                    "An error occurred while fetching data from the API: " . $exp->getMessage()
-                );
-                throw new UserFetcherException(
-                    'An error occurred while fetching data from the API.'
-                );
+                $errMessage = "An error occurred while fetching data from the API: " . $exp->getMessage();
+                $this->logger->logError($errMessage);
+                throw new UserFetcherException($errMessage);
             }
         }
 

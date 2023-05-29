@@ -80,7 +80,6 @@ return static function (): Container {
 
     // Create the container builder
     $containerBuilder = new ContainerBuilder();
-    $containerBuilder->useAutowiring(true);
 
     // Configure the container with the dependencies
     $containerBuilder->addDefinitions($dependencies);
